@@ -14,8 +14,7 @@ namespace AgriSaarthi.Api.DTOs
         public string Email { get; set; } = string.Empty;
 
         [Required]
-        [Phone]
-        [MaxLength(20)]
+        [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "Invalid phone number. Please enter a valid 10-digit mobile number.")]
         public string PhoneNumber { get; set; } = string.Empty;
 
         [Required]

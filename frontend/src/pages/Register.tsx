@@ -21,6 +21,10 @@ export default function Register() {
     e.preventDefault();
     setError('');
 
+    if (!/^[6-9]\d{9}$/.test(formData.phone)) {
+      return setError('Invalid phone number. Please enter a valid 10-digit mobile number.');
+    }
+
     if (formData.password !== formData.confirmPassword) {
       return setError('Passwords do not match');
     }
@@ -47,6 +51,11 @@ export default function Register() {
       const data = await res.json();
 
       if (!res.ok) {
+        if (data.errors) {
+          // Parse ASP.NET Core ModelState errors
+          const firstErrorKey = Object.keys(data.errors)[0];
+          throw new Error(data.errors[firstErrorKey][0]);
+        }
         throw new Error(data.message || 'Registration failed. Please check your inputs.');
       }
 
