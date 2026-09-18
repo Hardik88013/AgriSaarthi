@@ -21,6 +21,7 @@ builder.Services.AddDbContext<AgriSaarthiDbContext>(options =>
 builder.Services.AddScoped<IFarmerService, FarmerService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddHttpClient<IAiService, AiService>();
+builder.Services.AddHttpClient<IWeatherService, WeatherService>();
 
 // Configure JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is missing.");
