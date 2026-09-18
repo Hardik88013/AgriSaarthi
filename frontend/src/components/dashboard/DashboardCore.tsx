@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 export const WelcomeSection = () => {
@@ -29,7 +30,7 @@ export const WelcomeSection = () => {
       <div className="relative z-10 px-6 py-8 md:px-8 md:py-10 flex flex-col md:flex-row justify-between items-start md:items-center">
         <div>
           <h2 className="text-2xl md:text-3xl font-extrabold text-[#145a32] mb-1.5 flex items-center drop-shadow-sm">
-            {greeting}, {firstName}! <span className="ml-2 text-2xl">👋</span>
+            {greeting}, {firstName}!
           </h2>
           <p className="text-[#27ae60] font-bold text-sm md:text-base max-w-xl drop-shadow-sm">
             "Better Information. Healthier Crops. A Prosperous Tomorrow."
@@ -48,12 +49,12 @@ export const WelcomeSection = () => {
 };
 
 export const SummaryCard = ({ 
-  title, value, subtitle, icon, colorClass, isTrendUp 
+  title, value, subtitle, icon, colorClass, to 
 }: { 
-  title: string, value: string, subtitle: string, icon: React.ReactNode, colorClass: string, isTrendUp?: boolean 
+  title: string, value: string, subtitle: string, icon: React.ReactNode, colorClass: string, to: string 
 }) => {
   return (
-    <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm flex items-center justify-between group hover:border-emerald-200 transition-colors cursor-pointer relative overflow-hidden">
+    <Link to={to} className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm flex items-center justify-between group hover:border-emerald-200 transition-colors cursor-pointer relative overflow-hidden">
       <div className="flex items-center space-x-4">
         <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${colorClass}`}>
           {icon}
@@ -62,7 +63,6 @@ export const SummaryCard = ({
           <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">{title}</p>
           <h3 className="text-lg font-bold text-slate-800 leading-tight">{value}</h3>
           <p className="text-[11px] text-slate-500 font-medium mt-1 flex items-center">
-            {isTrendUp && <span className="text-[#27ae60] mr-1">↑</span>}
             {subtitle}
           </p>
         </div>
@@ -70,6 +70,6 @@ export const SummaryCard = ({
       <div className="w-7 h-7 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-[#145a32] group-hover:text-white transition-colors">
         <ArrowRight size={14} />
       </div>
-    </div>
+    </Link>
   );
 };

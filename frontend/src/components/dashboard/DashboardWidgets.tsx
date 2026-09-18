@@ -3,10 +3,34 @@ import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { 
   MapPin, Cloud, Maximize, Target, Activity, Droplets, 
-  ChevronRight, ArrowUpRight, Leaf, ShieldAlert
+  ArrowUpRight, Leaf, ShieldAlert
 } from 'lucide-react';
 
 export const FarmOverviewCard = () => {
+  const { user, token } = useAuth();
+  const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        if (!user?.id || !token) return;
+        const res = await fetch(`http://localhost:5000/api/farmers/${user.id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setProfile(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch profile', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProfile();
+  }, [user, token]);
+  
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col h-full overflow-hidden">
       <div className="p-4 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
@@ -14,53 +38,61 @@ export const FarmOverviewCard = () => {
           <Leaf className="w-4 h-4 text-[#27ae60] mr-2" />
           Your Farm Overview
         </h3>
-        <button className="text-[10px] font-bold text-slate-500 hover:text-[#27ae60] border border-slate-200 bg-white px-2.5 py-1 rounded-md transition-colors">
+        <Link to="/profile" className="text-[10px] font-bold text-slate-500 hover:text-[#27ae60] border border-slate-200 bg-white px-2.5 py-1 rounded-md transition-colors">
           Edit Profile
-        </button>
+        </Link>
       </div>
       <div className="p-4 grid grid-cols-2 gap-y-5 gap-x-3 flex-1 content-center">
-        <div className="flex items-start space-x-2.5">
-          <div className="mt-0.5 text-slate-400"><MapPin size={16} /></div>
-          <div>
-            <p className="text-[10px] text-slate-500 font-semibold uppercase">Village</p>
-            <p className="text-[13px] font-bold text-slate-800">Rurka Kalan</p>
+        {loading ? (
+          <div className="col-span-2 flex justify-center py-4">
+             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#27ae60]"></div>
           </div>
-        </div>
-        <div className="flex items-start space-x-2.5">
-          <div className="mt-0.5 text-slate-400"><MapPin size={16} /></div>
-          <div>
-            <p className="text-[10px] text-slate-500 font-semibold uppercase">District</p>
-            <p className="text-[13px] font-bold text-slate-800">Jalandhar</p>
-          </div>
-        </div>
-        <div className="flex items-start space-x-2.5">
-          <div className="mt-0.5 text-[#27ae60]"><LeafIcon className="w-4 h-4" /></div>
-          <div>
-            <p className="text-[10px] text-slate-500 font-semibold uppercase">Primary Crop</p>
-            <p className="text-[13px] font-bold text-slate-800">Wheat</p>
-          </div>
-        </div>
-        <div className="flex items-start space-x-2.5">
-          <div className="mt-0.5 text-amber-700"><Target size={16} /></div>
-          <div>
-            <p className="text-[10px] text-slate-500 font-semibold uppercase">Soil Type</p>
-            <p className="text-[13px] font-bold text-slate-800">Loamy</p>
-          </div>
-        </div>
-        <div className="flex items-start space-x-2.5">
-          <div className="mt-0.5 text-slate-400"><Maximize size={16} /></div>
-          <div>
-            <p className="text-[10px] text-slate-500 font-semibold uppercase">Farm Size</p>
-            <p className="text-[13px] font-bold text-slate-800">5 Acres</p>
-          </div>
-        </div>
-        <div className="flex items-start space-x-2.5">
-          <div className="mt-0.5 text-blue-500"><Droplets size={16} /></div>
-          <div>
-            <p className="text-[10px] text-slate-500 font-semibold uppercase">Irrigation Type</p>
-            <p className="text-[13px] font-bold text-slate-800">Tube Well</p>
-          </div>
-        </div>
+        ) : (
+          <>
+            <div className="flex items-start space-x-2.5">
+              <div className="mt-0.5 text-slate-400"><MapPin size={16} /></div>
+              <div>
+                <p className="text-[10px] text-slate-500 font-semibold uppercase">Village</p>
+                <p className="text-[13px] font-bold text-slate-800 truncate max-w-[100px]" title={profile?.village || 'Not set'}>{profile?.village || 'Not set'}</p>
+              </div>
+            </div>
+            <div className="flex items-start space-x-2.5">
+              <div className="mt-0.5 text-slate-400"><MapPin size={16} /></div>
+              <div>
+                <p className="text-[10px] text-slate-500 font-semibold uppercase">District</p>
+                <p className="text-[13px] font-bold text-slate-800 truncate max-w-[100px]" title={profile?.district || 'Not set'}>{profile?.district || 'Not set'}</p>
+              </div>
+            </div>
+            <div className="flex items-start space-x-2.5">
+              <div className="mt-0.5 text-[#27ae60]"><LeafIcon className="w-4 h-4" /></div>
+              <div>
+                <p className="text-[10px] text-slate-500 font-semibold uppercase">Primary Crop</p>
+                <p className="text-[13px] font-bold text-slate-800 truncate max-w-[100px]" title={profile?.primaryCrop || 'Not set'}>{profile?.primaryCrop || 'Not set'}</p>
+              </div>
+            </div>
+            <div className="flex items-start space-x-2.5">
+              <div className="mt-0.5 text-amber-700"><Target size={16} /></div>
+              <div>
+                <p className="text-[10px] text-slate-500 font-semibold uppercase">Soil Type</p>
+                <p className="text-[13px] font-bold text-slate-800 truncate max-w-[100px]" title={profile?.soilType || 'Not set'}>{profile?.soilType || 'Not set'}</p>
+              </div>
+            </div>
+            <div className="flex items-start space-x-2.5">
+              <div className="mt-0.5 text-slate-400"><Maximize size={16} /></div>
+              <div>
+                <p className="text-[10px] text-slate-500 font-semibold uppercase">Farm Size</p>
+                <p className="text-[13px] font-bold text-slate-800 truncate max-w-[100px]" title={profile?.farmSize ? `${profile.farmSize} Acres` : 'Not set'}>{profile?.farmSize ? `${profile.farmSize} Acres` : 'Not set'}</p>
+              </div>
+            </div>
+            <div className="flex items-start space-x-2.5">
+              <div className="mt-0.5 text-blue-500"><Droplets size={16} /></div>
+              <div>
+                <p className="text-[10px] text-slate-500 font-semibold uppercase">Irrigation</p>
+                <p className="text-[13px] font-bold text-slate-800 truncate max-w-[100px]" title={profile?.irrigationType || 'Not set'}>{profile?.irrigationType || 'Not set'}</p>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -74,57 +106,25 @@ export const CropRecommendationSummaryCard = () => {
           <LeafIcon className="w-4 h-4 text-[#27ae60] mr-2" />
           Crop Recommendation
         </h3>
-        <button className="text-[10px] font-bold text-slate-500 hover:text-[#27ae60] uppercase px-2 transition-colors">
-          View All
-        </button>
+        <Link to="/crop-recommendation" className="text-[10px] font-bold text-slate-500 hover:text-[#27ae60] border border-slate-200 bg-white px-2.5 py-1 rounded-md transition-colors">
+          View ML Tool
+        </Link>
       </div>
       
-      <div className="p-4 flex-1 flex flex-col">
-        {/* Tabs */}
-        <div className="flex bg-slate-50 rounded-lg p-1 mb-4 border border-slate-100">
-          <button className="flex-1 py-1 text-xs font-semibold rounded-md text-slate-500 hover:text-slate-700">Kharif</button>
-          <button className="flex-1 py-1 text-xs font-semibold rounded-md bg-[#145a32] text-white shadow-sm">Rabi</button>
-          <button className="flex-1 py-1 text-xs font-semibold rounded-md text-slate-500 hover:text-slate-700">Zaid</button>
+      <div className="p-5 flex-1 flex flex-col justify-center items-center text-center">
+        <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center mb-4">
+          <Target className="w-6 h-6 text-[#27ae60]" />
         </div>
-        
-        {/* Crop Grid */}
-        <div className="grid grid-cols-3 gap-3">
-          <div className="flex flex-col group cursor-pointer border border-slate-100 rounded-xl p-2 bg-white hover:border-emerald-200 transition-colors">
-            <div className="h-16 bg-slate-100 rounded-lg mb-2 overflow-hidden relative">
-               <img src="https://images.pexels.com/photos/1036148/pexels-photo-1036148.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Wheat" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-            </div>
-            <h4 className="text-[13px] font-bold text-slate-800 leading-none">Wheat</h4>
-            <p className="text-[9px] text-[#27ae60] font-bold mt-1">High Suitability</p>
-            <div className="flex items-center justify-between mt-1 pt-1 border-t border-slate-100">
-              <span className="text-[11px] font-extrabold text-[#145a32]">95%</span>
-              <ChevronRight size={12} className="text-[#27ae60]" />
-            </div>
-          </div>
-          
-          <div className="flex flex-col group cursor-pointer border border-slate-100 rounded-xl p-2 bg-white hover:border-emerald-200 transition-colors">
-            <div className="h-16 bg-slate-100 rounded-lg mb-2 overflow-hidden relative">
-               <img src="https://images.pexels.com/photos/5560867/pexels-photo-5560867.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Mustard" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-            </div>
-            <h4 className="text-[13px] font-bold text-slate-800 leading-none">Mustard</h4>
-            <p className="text-[9px] text-amber-600 font-bold mt-1">Suitable</p>
-            <div className="flex items-center justify-between mt-1 pt-1 border-t border-slate-100">
-              <span className="text-[11px] font-extrabold text-[#145a32]">78%</span>
-              <ChevronRight size={12} className="text-[#27ae60]" />
-            </div>
-          </div>
-          
-          <div className="flex flex-col group cursor-pointer border border-slate-100 rounded-xl p-2 bg-white hover:border-emerald-200 transition-colors">
-            <div className="h-16 bg-slate-100 rounded-lg mb-2 overflow-hidden relative">
-               <img src="https://images.pexels.com/photos/6316524/pexels-photo-6316524.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Gram" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-            </div>
-            <h4 className="text-[13px] font-bold text-slate-800 leading-none">Gram</h4>
-            <p className="text-[9px] text-amber-600 font-bold mt-1">Suitable</p>
-            <div className="flex items-center justify-between mt-1 pt-1 border-t border-slate-100">
-              <span className="text-[11px] font-extrabold text-[#145a32]">72%</span>
-              <ChevronRight size={12} className="text-[#27ae60]" />
-            </div>
-          </div>
-        </div>
+        <h4 className="text-sm font-bold text-slate-800 mb-2">Get AI Recommendations</h4>
+        <p className="text-xs text-slate-500 max-w-[220px] mb-4">
+          Use our machine learning model to find the best crop based on your soil and climate.
+        </p>
+        <Link 
+          to="/crop-recommendation"
+          className="bg-[#145a32] hover:bg-[#1e8449] text-white px-5 py-2 rounded-lg text-xs font-bold transition-colors w-full"
+        >
+          Get Recommendation
+        </Link>
       </div>
     </div>
   );
@@ -178,7 +178,7 @@ export const WeatherCard = () => {
           </div>
         ) : error ? (
           <div className="flex flex-col items-center justify-center text-center h-32 px-4">
-            <p className="text-xs text-slate-500 mb-2">{error === 'Location unavailable.' ? 'Please complete your farmer profile location to view weather.' : error}</p>
+            <p className="text-xs text-slate-500 mb-2">{error === 'Location unavailable.' ? 'Please complete your farmer profile location to view weather.' : 'Unable to load weather information. Please check again later.'}</p>
           </div>
         ) : weather && weather.current ? (
           <>

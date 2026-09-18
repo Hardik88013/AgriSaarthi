@@ -16,33 +16,36 @@ export default function Dashboard() {
       {/* 4 Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <SummaryCard 
-          title="Recommended Crop" 
-          value="Wheat" 
-          subtitle="Best for your soil & season"
+          title="Crop Recommendation" 
+          value="Find Best Crop" 
+          subtitle="Based on soil & climate"
           icon={<LeafIcon className="w-5 h-5" />} 
           colorClass="bg-emerald-100 text-[#27ae60]"
+          to="/crop-recommendation"
         />
         <SummaryCard 
-          title="Today's Weather" 
-          value="28°C" 
-          subtitle="Partly Cloudy"
+          title="Weather Forecast" 
+          value="Check Advisory" 
+          subtitle="Localized farm weather"
           icon={<CloudSun size={20} />} 
           colorClass="bg-sky-100 text-sky-500"
+          to="/weather"
         />
         <SummaryCard 
-          title="Market Price (Wheat)" 
-          value="₹2,425 / quintal" 
-          subtitle="+2.3%"
-          isTrendUp={true}
+          title="Reference Prices" 
+          value="Market Rates" 
+          subtitle="Check mandi rates"
           icon={<IndianRupee size={20} />} 
           colorClass="bg-amber-100 text-amber-600"
+          to="/market-prices"
         />
         <SummaryCard 
-          title="Soil Health" 
-          value="Good" 
-          subtitle="NPK levels are balanced"
+          title="Plant Health" 
+          value="Disease Scan" 
+          subtitle="Detect leaf diseases via ML"
           icon={<Beaker size={20} />} 
           colorClass="bg-[#e8f3ee] text-[#145a32]"
+          to="/disease-detection"
         />
       </div>
 
