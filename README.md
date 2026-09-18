@@ -10,7 +10,7 @@ AgriSaarthi is an AI-powered agricultural advisory platform designed to empower 
 Farmers often face challenges due to unpredictable weather, undiagnosed crop diseases, and lack of localized, data-driven agricultural advice. AgriSaarthi bridges this gap by providing an intuitive, accessible platform for agricultural intelligence.
 
 ## Technology Stack
-- **Frontend:** React, TypeScript, Vite, Tailwind CSS
+- **Frontend:** React, TypeScript, Vite, Tailwind CSS, Lucide Icons
 - **Backend API:** ASP.NET Core Web API, C#, Entity Framework Core, SQL Server, JWT Authentication
 - **AI/ML Service:** Python, FastAPI, scikit-learn, TensorFlow
 
@@ -31,7 +31,8 @@ ASP.NET Core Web API (Main Backend)
 ## Current Development Status
 - **Phase 1:** Initialized repository structure, basic frontend shell, and minimal backend API endpoints for health checks. (Completed)
 - **Phase 2:** Established database layer (EF Core + SQL Server) and basic Farmer Profile functionality. (Completed)
-- **Phase 3:** Implemented secure JWT Farmer authentication, routing, and access control. (In Progress)
+- **Phase 3:** Implemented secure JWT Farmer authentication, routing, and access control. (Completed)
+- **Phase 4:** Built the comprehensive frontend dashboard shell, responsive layouts, and UI component architecture. (In Progress)
 
 ## Local Setup Instructions
 
