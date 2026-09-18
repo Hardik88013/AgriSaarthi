@@ -1,4 +1,4 @@
-import { Bell, Search, Menu, LogOut } from 'lucide-react';
+import { Bell, Menu, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 interface HeaderProps {
@@ -20,17 +20,6 @@ export default function Header({ setSidebarOpen }: HeaderProps) {
           >
             <Menu size={24} />
           </button>
-
-          <div className="max-w-md w-full hidden sm:block relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search size={18} className="text-slate-400" />
-            </div>
-            <input
-              type="text"
-              placeholder="Search crops, farming tips & resources..."
-              className="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-full leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-[#27ae60] focus:ring-1 focus:ring-[#27ae60] sm:text-sm transition-colors"
-            />
-          </div>
         </div>
 
         {/* Right side: Notifications & Profile */}

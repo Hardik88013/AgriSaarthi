@@ -1,4 +1,4 @@
-import { Search, Bell, LogOut } from 'lucide-react';
+import { Bell, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,19 +24,7 @@ export default function Header() {
   };
 
   return (
-    <div className="bg-[#f3f7f5] lg:bg-transparent px-4 md:px-6 lg:px-8 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-      {/* Search Bar */}
-      <div className="relative flex-1 max-w-3xl flex items-center group order-2 md:order-1">
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <Search size={18} className="text-slate-400 group-focus-within:text-[#27ae60] transition-colors" />
-        </div>
-        <input
-          type="text"
-          placeholder="Search crops, farming tips & resources..."
-          className="block w-full pl-11 pr-4 py-3 md:py-2.5 bg-white border-0 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] rounded-full text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#27ae60]/20"
-        />
-      </div>
-
+    <div className="bg-[#f3f7f5] lg:bg-transparent px-4 md:px-6 lg:px-8 py-4 flex flex-col md:flex-row md:items-center justify-end gap-4">
       {/* Right Actions */}
       <div className="flex items-center justify-end space-x-4 md:space-x-6 shrink-0 order-1 md:order-2">
         <button className="relative p-2 text-slate-500 hover:bg-white hover:shadow-sm rounded-full transition-all">
