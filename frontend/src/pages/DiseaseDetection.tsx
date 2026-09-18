@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { Upload, X, AlertTriangle, Scan, CheckCircle, RotateCcw } from 'lucide-react';
+import { Upload, X, AlertTriangle, Scan, CheckCircle, RotateCcw, Info, ShieldAlert } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 export const DiseaseDetection = () => {
   const { token } = useAuth();
@@ -8,6 +9,7 @@ export const DiseaseDetection = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ predictedDisease: string, confidence: number } | null>(null);
+  const [knowledge, setKnowledge] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -21,6 +23,7 @@ export const DiseaseDetection = () => {
       setImage(file);
       setPreviewUrl(URL.createObjectURL(file));
       setResult(null);
+      setKnowledge(null);
       setError(null);
     }
   };
@@ -29,6 +32,7 @@ export const DiseaseDetection = () => {
     setImage(null);
     setPreviewUrl(null);
     setResult(null);
+    setKnowledge(null);
     setError(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
@@ -39,6 +43,7 @@ export const DiseaseDetection = () => {
     setLoading(true);
     setError(null);
     setResult(null);
+    setKnowledge(null);
 
     const formData = new FormData();
     formData.append('image', image);
@@ -63,6 +68,21 @@ export const DiseaseDetection = () => {
 
       const data = await res.json();
       setResult(data);
+
+      // Fetch knowledge base info
+      if (data.predictedDisease) {
+        try {
+          const kRes = await fetch(`http://localhost:5000/api/agri-knowledge/disease/${encodeURIComponent(data.predictedDisease)}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (kRes.ok) {
+            const kData = await kRes.json();
+            setKnowledge(kData);
+          }
+        } catch (e) {
+          console.warn("Could not load knowledge base data", e);
+        }
+      }
     } catch (err: any) {
       setError(err.message || 'An unexpected error occurred.');
     } finally {
@@ -71,7 +91,7 @@ export const DiseaseDetection = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
+    <div className="max-w-5xl mx-auto space-y-6 animate-fade-in">
       <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8">
         <div className="flex items-center space-x-3 mb-6">
           <div className="p-2 bg-emerald-100 rounded-lg">
@@ -146,30 +166,70 @@ export const DiseaseDetection = () => {
             </button>
           </div>
 
-          <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 flex flex-col justify-center">
+          <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 flex flex-col justify-start relative">
             {result ? (
-              <div className="space-y-6 animate-fade-in text-center">
-                <div className="inline-flex items-center justify-center p-3 bg-emerald-100 rounded-full mb-2">
-                  <CheckCircle className="h-8 w-8 text-emerald-600" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-1">Detection Result</h3>
+              <div className="space-y-6 animate-fade-in">
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center p-3 bg-emerald-100 rounded-full mb-2">
+                    <CheckCircle className="h-8 w-8 text-emerald-600" />
+                  </div>
+                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">AI Prediction</h3>
                   <p className="text-2xl font-bold text-gray-800 capitalize">
-                    {result.predictedDisease.replace(/_/g, ' ')}
+                    {result.predictedDisease.replace(/___/g, ' - ').replace(/_/g, ' ')}
                   </p>
-                </div>
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600">Confidence</span>
-                    <span className="font-medium text-gray-800">{(result.confidence * 100).toFixed(1)}%</span>
+                  
+                  <div className="mt-4 px-8">
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-gray-600">Confidence</span>
+                      <span className="font-medium text-gray-800">{(result.confidence * 100).toFixed(1)}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-emerald-500 h-2 rounded-full transition-all duration-1000"
+                        style={{ width: `${result.confidence * 100}%` }}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="bg-emerald-500 h-2 rounded-full transition-all duration-1000"
-                      style={{ width: `${result.confidence * 100}%` }}
-                    ></div>
-                  </div>
                 </div>
+
+                {knowledge && knowledge.severity !== 'None' && (
+                  <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm mt-4 text-sm text-left space-y-3">
+                    <h4 className="font-bold text-slate-800 flex items-center gap-1.5 border-b pb-2">
+                      <ShieldAlert className="w-4 h-4 text-red-500" />
+                      Disease Information
+                    </h4>
+                    
+                    {knowledge.symptoms && knowledge.symptoms.length > 0 && (
+                      <div>
+                        <span className="font-semibold text-slate-700 block mb-1">Symptoms:</span>
+                        <ul className="list-disc pl-4 text-slate-600 text-xs space-y-0.5">
+                          {knowledge.symptoms.map((s: string, i: number) => <li key={i}>{s}</li>)}
+                        </ul>
+                      </div>
+                    )}
+                    {knowledge.management && knowledge.management.length > 0 && (
+                      <div>
+                        <span className="font-semibold text-blue-700 block mb-1">Management:</span>
+                        <ul className="list-disc pl-4 text-blue-600 text-xs space-y-0.5">
+                          {knowledge.management.map((s: string, i: number) => <li key={i}>{s}</li>)}
+                        </ul>
+                      </div>
+                    )}
+                    <div className="pt-2 text-center">
+                      <Link to="/pest-disease" className="text-xs text-[#27ae60] font-semibold hover:underline">
+                        View full pest & disease intelligence
+                      </Link>
+                    </div>
+                  </div>
+                )}
+                
+                {knowledge && knowledge.severity === 'None' && (
+                  <div className="bg-green-50 p-4 rounded-lg border border-green-200 text-green-800 text-sm text-center">
+                    <p className="font-bold mb-1">Crop appears healthy!</p>
+                    <p className="text-xs">Continue standard monitoring and maintenance.</p>
+                  </div>
+                )}
+
                 <button
                   onClick={clearImage}
                   className="mt-6 flex items-center justify-center space-x-2 text-emerald-600 font-medium hover:text-emerald-700 mx-auto"
@@ -179,7 +239,7 @@ export const DiseaseDetection = () => {
                 </button>
               </div>
             ) : (
-              <div className="text-center text-gray-500">
+              <div className="text-center text-gray-500 h-full flex flex-col justify-center">
                 <Scan className="h-12 w-12 mx-auto text-gray-300 mb-3" />
                 <p>Results will appear here after analysis.</p>
               </div>
@@ -188,8 +248,12 @@ export const DiseaseDetection = () => {
         </div>
       </div>
       
-      <div className="bg-white rounded-2xl shadow-sm p-6 text-sm text-gray-500">
-        <p><strong>Disclaimer:</strong> This AI prediction system provides automated analysis of leaf imagery. It should be used as an advisory tool and is not a substitute for professional agricultural or agronomical diagnosis.</p>
+      <div className="bg-amber-50 rounded-2xl shadow-sm p-5 text-sm text-amber-800 flex items-start gap-3 border border-amber-100">
+        <Info className="w-5 h-5 flex-shrink-0 mt-0.5" />
+        <p>
+          <strong>Disclaimer:</strong> This is an AI Prediction. It provides automated analysis of leaf imagery based on patterns. 
+          Use this result as an initial indication and consult a qualified agricultural expert for confirmation when needed.
+        </p>
       </div>
     </div>
   );

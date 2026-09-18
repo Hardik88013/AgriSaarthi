@@ -9,6 +9,7 @@ import PlaceholderPage from './pages/PlaceholderPage';
 import CropRecommendation from './pages/CropRecommendation';
 import Weather from './pages/Weather';
 import { DiseaseDetection } from './pages/DiseaseDetection';
+import PestDisease from './pages/PestDisease';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
               <Route path="/crop-recommendation" element={<CropRecommendation />} />
               <Route path="/weather" element={<Weather />} />
               <Route path="/disease-detection" element={<DiseaseDetection />} />
+              <Route path="/pest-disease" element={<PestDisease />} />
               <Route path="*" element={<PlaceholderPage />} />
             </Route>
           </Route>

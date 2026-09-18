@@ -1,8 +1,8 @@
 import { CloudSun, IndianRupee, Beaker } from 'lucide-react';
 import { WelcomeSection, SummaryCard } from '../components/dashboard/DashboardCore';
-import { 
-  FarmOverviewCard, WeatherCard, DiseaseDetectionCard, 
-  CropRecommendationSummaryCard, AiSaarthiChatCard, MarketPricesTableCard 
+import { FarmOverviewCard, WeatherCard, DiseaseDetectionCard, 
+  CropRecommendationSummaryCard, MarketPricesTableCard,
+  PestDiseaseAlertsCard
 } from '../components/dashboard/DashboardWidgets';
 import { ExtrasRow } from '../components/dashboard/DashboardExtras';
 
@@ -57,7 +57,7 @@ export default function Dashboard() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 h-auto">
             <DiseaseDetectionCard />
-            <AiSaarthiChatCard />
+            <PestDiseaseAlertsCard />
           </div>
         </div>
 

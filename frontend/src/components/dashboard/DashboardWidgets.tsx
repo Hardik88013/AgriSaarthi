@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { 
   MapPin, Cloud, Maximize, Target, Activity, Droplets, 
-  ChevronRight, ArrowUpRight, ArrowDownRight, Leaf
+  ChevronRight, ArrowUpRight, ArrowDownRight, Leaf, ShieldAlert
 } from 'lucide-react';
 
 export const FarmOverviewCard = () => {
@@ -232,6 +232,28 @@ export const DiseaseDetectionCard = () => {
             Upload Image
           </div>
         </Link>
+      </div>
+    </div>
+  );
+};
+
+export const PestDiseaseAlertsCard = () => {
+  return (
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col h-full overflow-hidden">
+      <div className="p-4 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
+        <h3 className="font-bold text-slate-800 flex items-center text-sm">
+          <ShieldAlert className="w-4 h-4 text-orange-500 mr-2" />
+          Pest & Disease Alerts
+        </h3>
+        <Link to="/pest-disease" className="text-[10px] font-bold text-slate-500 uppercase px-2 transition-colors hover:text-[#27ae60]">
+          View All
+        </Link>
+      </div>
+      <div className="p-5 flex-1 flex flex-col justify-center items-center">
+        <div className="bg-orange-50 text-orange-700 p-4 rounded-xl text-center w-full">
+          <p className="text-sm font-semibold mb-1">No major advisory at this time.</p>
+          <p className="text-xs opacity-80">Continue standard monitoring of your fields.</p>
+        </div>
       </div>
     </div>
   );
