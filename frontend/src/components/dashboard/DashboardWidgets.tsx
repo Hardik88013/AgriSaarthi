@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   MapPin, Cloud, Maximize, Target, Activity, Droplets, 
-  ChevronRight, ArrowUpRight, ArrowDownRight
+  ChevronRight, ArrowUpRight, ArrowDownRight, Leaf
 } from 'lucide-react';
 
 export const FarmOverviewCard = () => {
@@ -11,7 +11,7 @@ export const FarmOverviewCard = () => {
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col h-full overflow-hidden">
       <div className="p-4 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
         <h3 className="font-bold text-slate-800 flex items-center text-sm">
-          <LeafIcon className="w-4 h-4 text-[#27ae60] mr-2" />
+          <Leaf className="w-4 h-4 text-[#27ae60] mr-2" />
           Your Farm Overview
         </h3>
         <button className="text-[10px] font-bold text-slate-500 hover:text-[#27ae60] border border-slate-200 bg-white px-2.5 py-1 rounded-md transition-colors">
@@ -216,22 +216,22 @@ export const DiseaseDetectionCard = () => {
           <Activity className="w-4 h-4 text-[#27ae60] mr-2" />
           Disease Detection
         </h3>
-        <button className="text-[10px] font-bold text-slate-500 uppercase px-2 transition-colors">
-          Upload Image
-        </button>
+        <Link to="/disease-detection" className="text-[10px] font-bold text-slate-500 uppercase px-2 transition-colors hover:text-[#27ae60]">
+          Scan
+        </Link>
       </div>
-      <div className="p-4 flex-1 flex flex-col justify-center items-center">
-        <div className="w-full border-2 border-dashed border-emerald-200/60 rounded-xl p-5 flex flex-col items-center justify-center text-center bg-[#f8fbf9] hover:bg-[#eefaf4] transition-colors cursor-pointer group">
+      <div className="p-5 flex-1 flex flex-col justify-center items-center relative">
+        <Link to="/disease-detection" className="w-full border-2 border-dashed border-emerald-200/60 rounded-xl p-5 flex flex-col items-center justify-center text-center bg-[#f8fbf9] hover:bg-[#eefaf4] transition-colors cursor-pointer group">
           <div className="w-10 h-10 bg-white rounded-lg shadow-sm border border-emerald-100 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
             <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
           </div>
           <p className="text-[13px] font-bold text-slate-800 mb-1">Upload a leaf image</p>
-          <p className="text-[10px] text-slate-500 mb-4 max-w-[200px] leading-relaxed">Get instant AI-powered disease detection and treatment suggestions.</p>
-          <button className="bg-[#145a32] hover:bg-[#1e8449] text-white px-4 py-2 rounded-lg text-xs font-bold shadow-sm flex items-center transition-colors">
+          <p className="text-[10px] text-slate-500 mb-4 max-w-[200px] leading-relaxed">Get instant AI-powered disease detection.</p>
+          <div className="bg-[#145a32] hover:bg-[#1e8449] text-white px-4 py-2 rounded-lg text-xs font-bold shadow-sm flex items-center transition-colors">
             <ArrowUpRight size={14} className="mr-1.5" />
             Upload Image
-          </button>
-        </div>
+          </div>
+        </Link>
       </div>
     </div>
   );
