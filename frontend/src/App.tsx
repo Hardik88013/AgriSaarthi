@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import { AuthLayout, ProtectedRoute } from './components/Layout';
+import { AppLayout, ProtectedRoute } from './components/Layout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import FarmerProfileForm from './components/FarmerProfileForm';
+import PlaceholderPage from './pages/PlaceholderPage';
 
 function App() {
   return (
@@ -17,14 +18,15 @@ function App() {
 
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
-            <Route element={<AuthLayout />}>
-              <Route path="/" element={<Dashboard />} />
+            <Route element={<AppLayout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile" element={<FarmerProfileForm />} />
+              <Route path="*" element={<PlaceholderPage />} />
             </Route>
           </Route>
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          {/* Fallback to Dashboard */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
