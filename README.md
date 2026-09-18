@@ -185,3 +185,49 @@ dotnet build
 - Disease Detection uses PlantVillage-derived data and MobileNetV2.
 - Disease model performance should not be represented beyond the verified training/evaluation results.
 - Large datasets/model binaries are intentionally excluded from Git where appropriate.
+
+## Deployment
+
+The application utilizes a multi-tier deployment architecture requiring the following services:
+
+1. **Frontend (React/Vite)**
+2. **ASP.NET Core Web API (Backend)**
+3. **FastAPI AI Service**
+4. **SQL Server Database**
+
+The architecture strictly routes all frontend traffic through the ASP.NET Core API. The frontend does **not** communicate directly with the FastAPI service or SQL database.
+
+### ML Model Deployment
+The Machine Learning models for Crop Recommendation and Disease Detection must be physically present and accessible to the FastAPI service at runtime. They are loaded from local file paths within the AI Service container/environment.
+
+**Required Files:**
+- Crop Recommendation: crop_rf_model.joblib
+- Disease Detection: disease_model.pth and classes.json
+
+Ensure the local storage or mounted volume contains these models when deploying the FastAPI service.
+
+### Environment Variables
+Configure the following required variables (names exactly match codebase configurations) using secure runtime configuration or environment variable injection. Do not hardcode production secrets.
+
+**ASP.NET Core (Backend):**
+`	ext
+ConnectionStrings:DefaultConnection=<your-production-sql-connection-string>
+Jwt:Key=<your-production-jwt-secret>
+Jwt:Issuer=<your-production-jwt-issuer>
+Jwt:Audience=<your-production-jwt-audience>
+Cors:AllowedOrigins:0=<deployed-frontend-url>
+AiService:BaseUrl=<deployed-fastapi-url>
+`
+
+**FastAPI (AI Service):**
+`	ext
+ALLOWED_ORIGINS=<deployed-backend-url>
+`
+
+**React (Frontend):**
+`	ext
+VITE_API_URL=<deployed-backend-url>
+`
+
+### SPA Routing
+When hosting the React frontend (e.g., Vercel, Netlify, or Nginx), ensure SPA fallback routing is configured so that all paths redirect to index.html to support client-side routing on reload.

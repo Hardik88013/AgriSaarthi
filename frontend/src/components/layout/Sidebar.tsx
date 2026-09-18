@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, User, Sprout, Bug, CloudSun, 
-  ShieldAlert, Lightbulb, Bot, LineChart, BookOpen, Settings, X 
+  ShieldAlert, Lightbulb, LineChart, BookOpen, Settings, X 
 } from 'lucide-react';
 import logo from '../../assets/logo.jpg';
 import clsx from 'clsx';
@@ -19,7 +19,6 @@ const navItems = [
   { name: 'Weather Advisory', path: '/weather', icon: CloudSun },
   { name: 'Pest & Disease Info', path: '/pest-info', icon: Bug },
   { name: 'Farming Tips', path: '/tips', icon: Lightbulb },
-  { name: 'AI Assistant', path: '/ai-assistant', icon: Bot },
   { name: 'Market Prices', path: '/market', icon: LineChart },
   { name: 'Knowledge Hub', path: '/hub', icon: BookOpen },
   { name: 'Settings', path: '/settings', icon: Settings },

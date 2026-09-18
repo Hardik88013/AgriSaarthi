@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import React, { useState, useRef } from 'react';
 import { Upload, X, AlertTriangle, Scan, CheckCircle, RotateCcw, Info, ShieldAlert } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -49,7 +50,7 @@ export const DiseaseDetection = () => {
     formData.append('image', image);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/disease-detection/predict`, {
+      const res = await fetch(`${API_BASE_URL}/api/disease-detection/predict`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -72,7 +73,7 @@ export const DiseaseDetection = () => {
       // Fetch knowledge base info
       if (data.predictedDisease) {
         try {
-          const kRes = await fetch(`http://localhost:5000/api/agri-knowledge/disease/${encodeURIComponent(data.predictedDisease)}`, {
+          const kRes = await fetch(`${API_BASE_URL}/api/agri-knowledge/disease/${encodeURIComponent(data.predictedDisease)}`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           if (kRes.ok) {

@@ -27,7 +27,7 @@ export default function Header({ setSidebarOpen }: HeaderProps) {
             </div>
             <input
               type="text"
-              placeholder="Ask AgriSaarthi or search..."
+              placeholder="Search crops, farming tips & resources..."
               className="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-full leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-[#27ae60] focus:ring-1 focus:ring-[#27ae60] sm:text-sm transition-colors"
             />
           </div>

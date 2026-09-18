@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Lightbulb, Search, AlertCircle, Loader2, Filter, ChevronDown, ChevronUp } from 'lucide-react';
@@ -29,7 +30,7 @@ export default function FarmingTips() {
       if (searchCategory) query.append('category', searchCategory);
       if (searchCrop) query.append('crop', searchCrop);
       
-      const res = await fetch(`http://localhost:5000/api/farming-tips?${query.toString()}`, {
+      const res = await fetch(`${API_BASE_URL}/api/farming-tips?${query.toString()}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.status === 404) {

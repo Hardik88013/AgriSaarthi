@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import { useState, useEffect } from 'react';
 import { 
   Cloud, Droplets, Wind, Calendar, 
@@ -49,7 +50,7 @@ export default function Weather() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:5000/api/weather', {
+      const res = await fetch(`${API_BASE_URL}/api/weather`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
@@ -65,7 +66,7 @@ export default function Weather() {
       setWeather(data);
 
       try {
-        const advRes = await fetch('http://localhost:5000/api/agri-knowledge/advisory', {
+        const advRes = await fetch(`${API_BASE_URL}/api/agri-knowledge/advisory`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (advRes.ok) {

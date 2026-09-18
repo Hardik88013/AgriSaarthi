@@ -1,4 +1,4 @@
-import { Search, Bell, Mic, LogOut } from 'lucide-react';
+import { Search, Bell, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,12 +32,9 @@ export default function Header() {
         </div>
         <input
           type="text"
-          placeholder="Ask AgriSaarthi anything... (e.g. best crop for my soil, today's weather)"
-          className="block w-full pl-11 pr-12 py-3 md:py-2.5 bg-white border-0 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] rounded-full text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#27ae60]/20"
+          placeholder="Search crops, farming tips & resources..."
+          className="block w-full pl-11 pr-4 py-3 md:py-2.5 bg-white border-0 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] rounded-full text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#27ae60]/20"
         />
-        <button className="absolute inset-y-0 right-2 flex items-center justify-center px-2">
-          <Mic size={18} className="text-[#27ae60]" />
-        </button>
       </div>
 
       {/* Right Actions */}

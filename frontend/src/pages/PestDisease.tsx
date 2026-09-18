@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import { useState, useEffect } from 'react';
 import { ShieldAlert, Bug, Activity, Info } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -26,7 +27,7 @@ export default function PestDisease() {
 
   const fetchCrops = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/agri-knowledge/crops', {
+      const res = await fetch(`${API_BASE_URL}/api/agri-knowledge/crops`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -44,12 +45,12 @@ export default function PestDisease() {
   const fetchKnowledge = async (cropId: string) => {
     setLoading(true);
     try {
-      const dRes = await fetch(`http://localhost:5000/api/agri-knowledge/diseases?crop=${cropId}`, {
+      const dRes = await fetch(`${API_BASE_URL}/api/agri-knowledge/diseases?crop=${cropId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (dRes.ok) setDiseases(await dRes.json());
 
-      const pRes = await fetch(`http://localhost:5000/api/agri-knowledge/pests?crop=${cropId}`, {
+      const pRes = await fetch(`${API_BASE_URL}/api/agri-knowledge/pests?crop=${cropId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (pRes.ok) setPests(await pRes.json());

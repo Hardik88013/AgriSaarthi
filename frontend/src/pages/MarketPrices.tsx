@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { LineChart, Search, AlertCircle, MapPin, Building, Calendar, Info, Loader2 } from 'lucide-react';
@@ -29,7 +30,7 @@ export default function MarketPrices() {
       if (searchCrop) query.append('crop', searchCrop);
       if (searchState) query.append('state', searchState);
       
-      const res = await fetch(`http://localhost:5000/api/market-prices?${query.toString()}`, {
+      const res = await fetch(`${API_BASE_URL}/api/market-prices?${query.toString()}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.status === 404) {

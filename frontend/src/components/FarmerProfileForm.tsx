@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../config';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 
@@ -27,7 +28,7 @@ export default function FarmerProfileForm() {
 
     const fetchProfile = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/farmers/${user.id}/profile`, {
+        const res = await fetch(`${API_BASE_URL}/api/farmers/${user.id}/profile`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         
@@ -67,7 +68,7 @@ export default function FarmerProfileForm() {
     setMessage(null);
 
     try {
-      const profileResponse = await fetch(`http://localhost:5000/api/farmers/${user.id}/profile`, {
+      const profileResponse = await fetch(`${API_BASE_URL}/api/farmers/${user.id}/profile`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../config';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
@@ -15,7 +16,7 @@ export const FarmOverviewCard = () => {
     const fetchProfile = async () => {
       try {
         if (!user?.id || !token) return;
-        const res = await fetch(`http://localhost:5000/api/farmers/${user.id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/farmers/${user.id}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) {
@@ -140,7 +141,7 @@ export const WeatherCard = () => {
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/weather', {
+        const res = await fetch(`${API_BASE_URL}/api/weather`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.status === 404) throw new Error('Location unavailable.');
