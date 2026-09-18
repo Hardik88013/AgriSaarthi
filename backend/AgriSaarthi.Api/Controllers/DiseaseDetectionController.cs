@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace AgriSaarthi.Api.Controllers
@@ -17,11 +18,13 @@ namespace AgriSaarthi.Api.Controllers
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<DiseaseDetectionController> _logger;
+        private readonly IConfiguration _config;
 
-        public DiseaseDetectionController(IHttpClientFactory httpClientFactory, ILogger<DiseaseDetectionController> logger)
+        public DiseaseDetectionController(IHttpClientFactory httpClientFactory, ILogger<DiseaseDetectionController> logger, IConfiguration config)
         {
             _httpClientFactory = httpClientFactory;
             _logger = logger;
+            _config = config;
         }
 
         [HttpPost("predict")]
@@ -53,8 +56,9 @@ namespace AgriSaarthi.Api.Controllers
                 streamContent.Headers.ContentType = new MediaTypeHeaderValue(image.ContentType);
                 content.Add(streamContent, "file", image.FileName);
 
-                var aiClient = _httpClientFactory.CreateClient("AiService");
-                var response = await aiClient.PostAsync("/predict/disease", content);
+                var aiClient = _httpClientFactory.CreateClient();
+                var baseUrl = _config["AiService:BaseUrl"] ?? "http://localhost:8000";
+                var response = await aiClient.PostAsync($"{baseUrl}/predict/disease", content);
 
                 if (!response.IsSuccessStatusCode)
                 {
