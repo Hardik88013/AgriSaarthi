@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { 
   Home, User, Leaf, ShieldAlert, CloudSun, Bug, 
-  LineChart, Lightbulb, Bot, BookOpen, Users, Settings, LogOut 
+  LineChart, Lightbulb, BookOpen, Settings, LogOut 
 } from 'lucide-react';
 import logoUrl from '../../assets/logo.jpg';
 
@@ -22,12 +22,10 @@ export default function Sidebar() {
     { name: 'Crop Recommendation', path: '/crop-recommendation', icon: <Leaf size={18} /> },
     { name: 'Disease Detection', path: '/disease-detection', icon: <ShieldAlert size={18} /> },
     { name: 'Weather Advisory', path: '/weather', icon: <CloudSun size={18} /> },
-    { name: 'Pest & Disease Info', path: '/pest-info', icon: <Bug size={18} /> },
+    { name: 'Pest & Disease Info', path: '/pest-disease', icon: <Bug size={18} /> },
     { name: 'Market Prices', path: '/market-prices', icon: <LineChart size={18} /> },
     { name: 'Farming Tips', path: '/farming-tips', icon: <Lightbulb size={18} /> },
-    { name: 'AI Assistant', path: '/ai-assistant', icon: <Bot size={18} /> },
-    { name: 'Knowledge Hub', path: '/knowledge', icon: <BookOpen size={18} /> },
-    { name: 'Community', path: '/community', icon: <Users size={18} /> },
+    { name: 'Knowledge Hub', path: '/knowledge-hub', icon: <BookOpen size={18} /> },
     { name: 'Settings', path: '/settings', icon: <Settings size={18} /> },
   ];
 
@@ -72,18 +70,18 @@ export default function Sidebar() {
         </ul>
       </div>
 
-      {/* Need Help Card */}
+      {/* Knowledge Hub Card */}
       <div className="p-4">
         <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100/50 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-2 opacity-10">
-            <Bot size={48} className="text-[#145a32]" />
+            <BookOpen size={48} className="text-[#145a32]" />
           </div>
-          <h4 className="font-bold text-[#145a32] text-sm relative z-10">Need Help?</h4>
-          <p className="text-xs text-[#27ae60] mb-3 relative z-10">Our AI is here for you</p>
-          <button className="w-full bg-[#145a32] hover:bg-[#1e8449] text-white text-xs font-semibold py-2 px-3 rounded-lg transition-colors flex items-center justify-between relative z-10">
-            <span>Chat with AgriSaarthi</span>
+          <h4 className="font-bold text-[#145a32] text-sm relative z-10">Need Advice?</h4>
+          <p className="text-xs text-[#27ae60] mb-3 relative z-10">Explore our resources</p>
+          <Link to="/knowledge-hub" className="w-full bg-[#145a32] hover:bg-[#1e8449] text-white text-xs font-semibold py-2 px-3 rounded-lg transition-colors flex items-center justify-between relative z-10">
+            <span>Knowledge Hub</span>
             <span>&rarr;</span>
-          </button>
+          </Link>
         </div>
         
         <button
