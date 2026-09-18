@@ -1,3 +1,6 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import { 
   MapPin, Cloud, Maximize, Target, Activity, Droplets, 
   ChevronRight, ArrowUpRight, ArrowDownRight
@@ -128,6 +131,31 @@ export const CropRecommendationSummaryCard = () => {
 };
 
 export const WeatherCard = () => {
+  const { token } = useAuth();
+  const [weather, setWeather] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/weather', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.status === 404) throw new Error('Location unavailable.');
+        if (!res.ok) throw new Error('Failed to load weather.');
+        const data = await res.json();
+        setWeather(data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (token) fetchWeather();
+  }, [token]);
+
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm flex flex-col h-full overflow-hidden">
       <div className="p-4 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
@@ -135,28 +163,46 @@ export const WeatherCard = () => {
           <Cloud className="w-4 h-4 text-sky-500 mr-2" />
           Weather Advisory
         </h3>
-        <button className="text-[10px] font-bold text-slate-500 border border-slate-200 bg-white px-2.5 py-1 rounded-md transition-colors">
+        <button 
+          onClick={() => navigate('/weather')}
+          className="text-[10px] font-bold text-slate-500 border border-slate-200 bg-white px-2.5 py-1 rounded-md transition-colors hover:text-[#27ae60]"
+        >
           View Details
         </button>
       </div>
-      <div className="p-4 flex-1 flex flex-col justify-between">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <h2 className="text-3xl font-extrabold text-slate-800">28°C</h2>
-            <Cloud className="w-8 h-8 text-sky-400 fill-sky-100" />
+      <div className="p-4 flex-1 flex flex-col justify-center">
+        {loading ? (
+          <div className="flex flex-col items-center justify-center h-32">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-sky-500 mb-2"></div>
+            <p className="text-xs text-slate-500">Loading weather...</p>
           </div>
-          <div className="space-y-1.5 text-right">
-            <p className="text-[11px] text-slate-500 flex justify-between w-[120px]"><span className="font-medium">Humidity</span> <span className="font-bold text-slate-800">62%</span></p>
-            <p className="text-[11px] text-slate-500 flex justify-between w-[120px]"><span className="font-medium">Wind Speed</span> <span className="font-bold text-slate-800">12 km/h</span></p>
-            <p className="text-[11px] text-slate-500 flex justify-between w-[120px]"><span className="font-medium">Rain Chance</span> <span className="font-bold text-slate-800">20%</span></p>
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center text-center h-32 px-4">
+            <p className="text-xs text-slate-500 mb-2">{error === 'Location unavailable.' ? 'Please complete your farmer profile location to view weather.' : error}</p>
           </div>
-        </div>
-        <p className="text-sm font-semibold text-slate-600 mt-1">Partly Cloudy</p>
-        
-        <div className="mt-4 bg-[#eefaf4] rounded-xl p-3 flex items-start space-x-3 border border-emerald-100/50">
-          <div className="mt-0.5 text-[#27ae60] shrink-0"><LeafIcon className="w-4 h-4" /></div>
-          <p className="text-[11px] text-[#145a32] font-semibold leading-relaxed">Good conditions for field work today. No rain expected in next 24 hours.</p>
-        </div>
+        ) : weather && weather.current ? (
+          <>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <h2 className="text-3xl font-extrabold text-slate-800">{Math.round(weather.current.temperature)}°C</h2>
+                <Cloud className="w-8 h-8 text-sky-400 fill-sky-100" />
+              </div>
+              <div className="space-y-1.5 text-right">
+                <p className="text-[11px] text-slate-500 flex justify-between w-[120px]"><span className="font-medium">Location</span> <span className="font-bold text-slate-800 truncate ml-2" title={weather.location}>{weather.location.split(',')[0]}</span></p>
+                <p className="text-[11px] text-slate-500 flex justify-between w-[120px]"><span className="font-medium">Humidity</span> <span className="font-bold text-slate-800">{weather.current.humidity}%</span></p>
+                <p className="text-[11px] text-slate-500 flex justify-between w-[120px]"><span className="font-medium">Wind</span> <span className="font-bold text-slate-800">{weather.current.windSpeed} km/h</span></p>
+              </div>
+            </div>
+            <p className="text-sm font-semibold text-slate-600 mt-1">{weather.current.condition}</p>
+            
+            <div className="mt-4 bg-[#eefaf4] rounded-xl p-3 flex items-start space-x-3 border border-emerald-100/50">
+              <div className="mt-0.5 text-[#27ae60] shrink-0"><LeafIcon className="w-4 h-4" /></div>
+              <p className="text-[11px] text-[#145a32] font-semibold leading-relaxed line-clamp-2" title={weather.advisory}>
+                {weather.advisory}
+              </p>
+            </div>
+          </>
+        ) : null}
       </div>
     </div>
   );
