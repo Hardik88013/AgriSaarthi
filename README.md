@@ -11,14 +11,13 @@ Farmers often face challenges due to unpredictable weather, undiagnosed crop dis
 
 ## Technology Stack
 - **Frontend:** React, TypeScript, Vite, Tailwind CSS
-- **Backend API:** ASP.NET Core Web API, C#, Entity Framework Core, SQL Server
+- **Backend API:** ASP.NET Core Web API, C#, Entity Framework Core, SQL Server, JWT Authentication
 - **AI/ML Service:** Python, FastAPI, scikit-learn, TensorFlow
 
 ## High-Level Architecture
 ```text
 React/TypeScript (Frontend)
-        |
-        | REST API
+        | (JWT Authenticated REST)
         v
 ASP.NET Core Web API (Main Backend)
         |
@@ -29,16 +28,10 @@ ASP.NET Core Web API (Main Backend)
                        +---- ML Models
 ```
 
-## Repository Structure
-- `frontend/` - React frontend application
-- `backend/AgriSaarthi.Api/` - ASP.NET Core Web API
-- `ai-service/` - Python FastAPI service for AI/ML predictions
-- `ml/` - Jupyter notebooks, data preprocessing, and model training scripts
-- `docs/` - Project documentation and architecture diagrams
-
 ## Current Development Status
 - **Phase 1:** Initialized repository structure, basic frontend shell, and minimal backend API endpoints for health checks. (Completed)
-- **Phase 2:** Established database layer (EF Core + SQL Server) and basic Farmer Profile functionality. (In Progress)
+- **Phase 2:** Established database layer (EF Core + SQL Server) and basic Farmer Profile functionality. (Completed)
+- **Phase 3:** Implemented secure JWT Farmer authentication, routing, and access control. (In Progress)
 
 ## Local Setup Instructions
 
@@ -50,7 +43,9 @@ ASP.NET Core Web API (Main Backend)
 
 ### Configuration
 1. Copy `.env.example` to `.env` in the root directory (do not commit this file).
-2. For the main API backend, update `appsettings.Development.json` with your active SQL Server connection string under `DefaultConnection` if different from the default LocalDB.
+2. For the main API backend, update `appsettings.Development.json` with:
+   - Your active SQL Server connection string under `DefaultConnection`.
+   - A secure string for `Jwt:Key` (must be at least 16 characters).
 
 ### Database Setup
 To initialize the SQL Server database schema, run Entity Framework migrations from the backend folder:
