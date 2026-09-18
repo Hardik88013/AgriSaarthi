@@ -43,8 +43,7 @@ class CropRecommendationRequest(BaseModel):
 model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'ml', 'crop-recommendation', 'model', 'crop_rf_model.joblib')
 crop_model = None
 
-@app.on_event("startup")
-def load_model():
+def load_crop_model():
     global crop_model
     if os.path.exists(model_path):
         crop_model = joblib.load(model_path)
@@ -84,3 +83,78 @@ def predict_crop(request: CropRecommendationRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction error: {str(e)}")
 
+
+from fastapi import UploadFile, File
+import torch
+import torch.nn as nn
+from torchvision import models, transforms
+from PIL import Image
+import io
+import json
+
+disease_model_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'ml', 'disease-detection', 'model', 'disease_model.pth')
+classes_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'ml', 'disease-detection', 'model', 'classes.json')
+
+disease_model = None
+disease_classes = []
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+def load_disease_model():
+    global disease_model, disease_classes
+    if os.path.exists(disease_model_path) and os.path.exists(classes_path):
+        try:
+            with open(classes_path, "r") as f:
+                disease_classes = json.load(f)
+            
+            disease_model = models.mobilenet_v2(pretrained=False)
+            num_ftrs = disease_model.classifier[1].in_features
+            disease_model.classifier[1] = nn.Linear(num_ftrs, len(disease_classes))
+            disease_model.load_state_dict(torch.load(disease_model_path, map_location=device))
+            disease_model.to(device)
+            disease_model.eval()
+            print("Disease model loaded successfully.")
+        except Exception as e:
+            print(f"Failed to load disease model: {e}")
+    else:
+        print(f"Warning: Disease model or classes not found at {disease_model_path}")
+
+@app.on_event("startup")
+def startup_event():
+    load_crop_model()
+    load_disease_model()
+
+disease_transforms = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+])
+
+@app.post("/predict/disease")
+async def predict_disease(file: UploadFile = File(...)):
+    if disease_model is None:
+        raise HTTPException(status_code=503, detail="Disease detection model is not loaded or unavailable.")
+    
+    if not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="Invalid file type. Please upload an image.")
+    
+    try:
+        content = await file.read()
+        if len(content) > 10 * 1024 * 1024:
+            raise HTTPException(status_code=400, detail="File too large. Maximum size is 10MB.")
+            
+        image = Image.open(io.BytesIO(content)).convert("RGB")
+        input_tensor = disease_transforms(image).unsqueeze(0).to(device)
+        
+        with torch.no_grad():
+            outputs = disease_model(input_tensor)
+            probabilities = torch.nn.functional.softmax(outputs[0], dim=0)
+            confidence, predicted_idx = torch.max(probabilities, 0)
+            
+        predicted_class = disease_classes[predicted_idx.item()]
+        
+        return {
+            "predictedDisease": predicted_class,
+            "confidence": round(confidence.item(), 4)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="An error occurred while processing the image.")
