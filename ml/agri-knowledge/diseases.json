@@ -1,30 +1,38 @@
 [
   {
-    "id": "Potato___Late_blight",
-    "crop": "potato",
-    "name": "Potato Late Blight",
+    "id": "Pepper__bell___Bacterial_spot",
+    "crop": "pepper_bell",
+    "name": "Pepper Bacterial Spot",
     "symptoms": [
-      "Water-soaked, pale green spots on leaves",
-      "Spots rapidly turn brown/black",
-      "White fungal growth on the underside of leaves in humid weather",
-      "Dark brown lesions on stems"
+      "Small, yellow-green spots on leaves turning brown/black",
+      "Water-soaked margins around spots",
+      "Leaves may yellow and drop",
+      "Raised, scab-like spots on fruit"
     ],
     "favorableConditions": [
-      "High humidity (above 90%)",
-      "Cool to moderate temperatures (10-25°C)",
-      "Prolonged leaf wetness"
+      "Warm weather (24-30°C)",
+      "High humidity and frequent rainfall or overhead irrigation"
     ],
     "prevention": [
-      "Use certified disease-free seeds",
-      "Avoid overhead irrigation",
-      "Ensure proper plant spacing for air circulation"
+      "Use disease-free seeds and transplants",
+      "Practice crop rotation",
+      "Avoid working in the field when plants are wet"
     ],
     "management": [
-      "Apply protective fungicides before infection occurs",
-      "Remove and destroy infected plant debris",
-      "Harvest during dry weather"
+      "Apply copper-based bactericides early in the season",
+      "Remove and destroy infected plant debris"
     ],
     "severity": "High"
+  },
+  {
+    "id": "Pepper__bell___healthy",
+    "crop": "pepper_bell",
+    "name": "Pepper Healthy",
+    "symptoms": [],
+    "favorableConditions": [],
+    "prevention": ["Maintain balanced nutrition", "Monitor field regularly"],
+    "management": [],
+    "severity": "None"
   },
   {
     "id": "Potato___Early_blight",
@@ -52,6 +60,33 @@
     "severity": "Moderate"
   },
   {
+    "id": "Potato___Late_blight",
+    "crop": "potato",
+    "name": "Potato Late Blight",
+    "symptoms": [
+      "Water-soaked, pale green spots on leaves",
+      "Spots rapidly turn brown/black",
+      "White fungal growth on the underside of leaves in humid weather",
+      "Dark brown lesions on stems"
+    ],
+    "favorableConditions": [
+      "High humidity (above 90%)",
+      "Cool to moderate temperatures (10-25°C)",
+      "Prolonged leaf wetness"
+    ],
+    "prevention": [
+      "Use certified disease-free seeds",
+      "Avoid overhead irrigation",
+      "Ensure proper plant spacing for air circulation"
+    ],
+    "management": [
+      "Apply protective fungicides before infection occurs",
+      "Remove and destroy infected plant debris",
+      "Harvest during dry weather"
+    ],
+    "severity": "High"
+  },
+  {
     "id": "Potato___healthy",
     "crop": "potato",
     "name": "Potato Healthy",
@@ -62,37 +97,180 @@
     "severity": "None"
   },
   {
-    "id": "Tomato___Late_blight",
+    "id": "Tomato_Bacterial_spot",
     "crop": "tomato",
-    "name": "Tomato Late Blight",
+    "name": "Tomato Bacterial Spot",
     "symptoms": [
-      "Irregular, dark, water-soaked patches on leaves",
-      "White mold on undersides of leaves in wet weather",
-      "Firm, dark brown spots on fruit"
+      "Small, water-soaked spots on leaves that turn dark brown with yellow halos",
+      "Spots may merge, causing large blighted areas",
+      "Raised, rough, scab-like lesions on fruit",
+      "Infected leaves drop prematurely"
     ],
     "favorableConditions": [
-      "Cool, wet, and humid weather",
-      "Cloudy days with prolonged leaf wetness"
+      "Warm, wet weather (24-30°C)",
+      "Heavy rain or overhead irrigation spreading bacteria",
+      "Wounds from insects or mechanical damage"
     ],
     "prevention": [
-      "Plant resistant varieties",
-      "Avoid overhead watering",
-      "Stake tomatoes to improve air circulation"
+      "Use certified disease-free seeds and transplants",
+      "Avoid overhead irrigation; use drip irrigation where possible",
+      "Rotate tomato crops with non-host crops for at least 2 years",
+      "Avoid working in the field when plants are wet"
     ],
     "management": [
-      "Apply fungicides preventatively during favorable weather",
-      "Promptly remove and destroy infected plants"
+      "Apply copper-based bactericides as a preventative measure",
+      "Remove and destroy heavily infected plant material",
+      "Reduce leaf wetness through improved field drainage"
     ],
     "severity": "High"
   },
   {
-    "id": "Tomato___Target_Spot",
+    "id": "Tomato_Early_blight",
+    "crop": "tomato",
+    "name": "Tomato Early Blight",
+    "symptoms": [
+      "Dark brown to black spots with concentric rings (target-board appearance) on older leaves",
+      "Yellow halo surrounding lesions",
+      "Infected leaves turn yellow and drop",
+      "Dark, sunken lesions may appear at stem base"
+    ],
+    "favorableConditions": [
+      "Warm temperatures (24-29°C) with alternating wet and dry periods",
+      "Plants stressed by drought, poor nutrition, or heavy fruit load",
+      "Dense planting with poor air circulation"
+    ],
+    "prevention": [
+      "Maintain adequate crop nutrition, especially nitrogen",
+      "Use mulch to reduce soil splash onto lower leaves",
+      "Remove lower leaves showing early symptoms",
+      "Practice crop rotation"
+    ],
+    "management": [
+      "Apply recommended fungicides at first sign of disease",
+      "Remove and destroy infected plant debris after harvest"
+    ],
+    "severity": "Moderate"
+  },
+  {
+    "id": "Tomato_Late_blight",
+    "crop": "tomato",
+    "name": "Tomato Late Blight",
+    "symptoms": [
+      "Irregular, dark, water-soaked patches on leaves",
+      "White mold visible on undersides of leaves in wet weather",
+      "Firm, dark brown spots on fruit",
+      "Rapid collapse of entire plant in severe cases"
+    ],
+    "favorableConditions": [
+      "Cool, wet, and humid weather (10-24°C)",
+      "Cloudy days with prolonged leaf wetness",
+      "Heavy rainfall or dense fog"
+    ],
+    "prevention": [
+      "Plant resistant varieties where available",
+      "Avoid overhead watering",
+      "Stake tomatoes to improve air circulation",
+      "Remove volunteer tomato and potato plants"
+    ],
+    "management": [
+      "Apply fungicides preventatively during cool, wet weather",
+      "Promptly remove and destroy infected plants",
+      "Do not compost infected material"
+    ],
+    "severity": "High"
+  },
+  {
+    "id": "Tomato_Leaf_Mold",
+    "crop": "tomato",
+    "name": "Tomato Leaf Mold",
+    "symptoms": [
+      "Pale green to yellow spots on upper leaf surface",
+      "Olive-green to grayish-brown velvety mold on the underside of leaves",
+      "Infected leaves curl, wither, and drop",
+      "Fruit infection rarely occurs"
+    ],
+    "favorableConditions": [
+      "High humidity (above 85%) and poor air circulation",
+      "Moderate temperatures (22-25°C)",
+      "Common in greenhouse or protected cultivation"
+    ],
+    "prevention": [
+      "Improve air circulation through pruning and adequate plant spacing",
+      "Reduce humidity in greenhouses through ventilation",
+      "Avoid overhead watering",
+      "Use resistant varieties where available"
+    ],
+    "management": [
+      "Remove and destroy infected leaves promptly",
+      "Apply recommended fungicides if spread is significant"
+    ],
+    "severity": "Moderate"
+  },
+  {
+    "id": "Tomato_Septoria_leaf_spot",
+    "crop": "tomato",
+    "name": "Tomato Septoria Leaf Spot",
+    "symptoms": [
+      "Numerous small, circular spots (3-6mm) with dark brown margins and lighter tan/grey centers",
+      "Tiny dark dots (pycnidia) visible in center of spots",
+      "Spots appear first on older, lower leaves",
+      "Severe infection causes leaf yellowing and drop"
+    ],
+    "favorableConditions": [
+      "Warm, humid weather (20-25°C)",
+      "Frequent rainfall or overhead irrigation",
+      "Dense canopy with poor air circulation"
+    ],
+    "prevention": [
+      "Practice crop rotation — avoid solanaceous crops for 2+ years",
+      "Use mulch to reduce soil splash onto leaves",
+      "Remove infected lower leaves early in the season",
+      "Avoid working in fields when plants are wet"
+    ],
+    "management": [
+      "Apply fungicides at first symptom appearance",
+      "Remove and destroy infected plant material",
+      "Improve field drainage"
+    ],
+    "severity": "Moderate"
+  },
+  {
+    "id": "Tomato_Spider_mites_Two_spotted_spider_mite",
+    "crop": "tomato",
+    "name": "Tomato Spider Mites (Two-Spotted Spider Mite)",
+    "symptoms": [
+      "Fine stippling or bronzing of leaves due to feeding damage",
+      "Fine webbing visible on underside of leaves in heavy infestations",
+      "Leaves may turn yellow, dry out, and drop",
+      "Tiny mites (less than 1mm) visible on leaf undersides with magnification"
+    ],
+    "favorableConditions": [
+      "Hot, dry weather (above 30°C with low humidity)",
+      "Dusty field conditions",
+      "Water-stressed plants"
+    ],
+    "prevention": [
+      "Maintain adequate soil moisture to reduce plant stress",
+      "Avoid excessive nitrogen fertilization",
+      "Encourage natural predators (e.g., predatory mites)",
+      "Remove weeds that can serve as alternative hosts"
+    ],
+    "management": [
+      "Apply miticides or insecticidal soap sprays to undersides of leaves",
+      "Use strong water sprays to dislodge mites",
+      "Introduce natural predators such as Phytoseiulus persimilis in controlled environments"
+    ],
+    "severity": "Moderate"
+  },
+  {
+    "id": "Tomato__Target_Spot",
     "crop": "tomato",
     "name": "Tomato Target Spot",
     "symptoms": [
       "Small brown lesions with light centers on leaves",
       "Concentric rings may appear as spots enlarge",
-      "Brown lesions with sunken centers on fruit"
+      "Brown lesions with sunken centers on fruit",
+      "Leaf yellowing and defoliation in severe cases"
     ],
     "favorableConditions": [
       "High humidity and prolonged leaf wetness",
@@ -110,44 +288,65 @@
     "severity": "Moderate"
   },
   {
-    "id": "Tomato___healthy",
+    "id": "Tomato__Tomato_YellowLeaf__Curl_Virus",
     "crop": "tomato",
-    "name": "Tomato Healthy",
-    "symptoms": [],
-    "favorableConditions": [],
-    "prevention": ["Maintain balanced nutrition", "Monitor field regularly"],
-    "management": [],
-    "severity": "None"
-  },
-  {
-    "id": "Pepper__bell___Bacterial_spot",
-    "crop": "pepper_bell",
-    "name": "Pepper Bacterial Spot",
+    "name": "Tomato Yellow Leaf Curl Virus",
     "symptoms": [
-      "Small, yellow-green spots on leaves turning brown/black",
-      "Water-soaked margins around spots",
-      "Leaves may yellow and drop",
-      "Raised, scab-like spots on fruit"
+      "Severe upward curling and yellowing of young leaves",
+      "Stunted plant growth",
+      "Reduced fruit set and small, poorly developed fruit",
+      "Leaves may develop a leathery texture"
     ],
     "favorableConditions": [
-      "Warm weather (24-30°C)",
-      "High humidity and frequent rainfall or overhead irrigation"
+      "High whitefly (Bemisia tabaci) populations",
+      "Warm weather that favors whitefly activity",
+      "Presence of infected host plants nearby"
     ],
     "prevention": [
-      "Use disease-free seeds and transplants",
-      "Practice crop rotation",
-      "Avoid working in the field when plants are wet"
+      "Use virus-resistant or virus-tolerant varieties",
+      "Control whitefly populations using yellow sticky traps",
+      "Use reflective mulches to deter whiteflies",
+      "Remove and destroy infected plants promptly to prevent spread"
     ],
     "management": [
-      "Apply copper-based bactericides early in the season",
-      "Remove infected plant debris"
+      "No cure once a plant is infected — remove infected plants to prevent whitefly from spreading virus",
+      "Control whitefly vectors with appropriate insecticides",
+      "Avoid planting new seedlings near infected crops"
     ],
     "severity": "High"
   },
   {
-    "id": "Pepper__bell___healthy",
-    "crop": "pepper_bell",
-    "name": "Pepper Healthy",
+    "id": "Tomato__Tomato_mosaic_virus",
+    "crop": "tomato",
+    "name": "Tomato Mosaic Virus",
+    "symptoms": [
+      "Mosaic pattern of light and dark green areas on leaves",
+      "Leaf distortion, curling, and puckering",
+      "Stunted growth and reduced fruit production",
+      "Fruit may show yellow blotches or internal browning"
+    ],
+    "favorableConditions": [
+      "Spread through mechanical contact (tools, hands, clothing)",
+      "Aphid feeding can transmit some strains",
+      "Infected seeds or transplants"
+    ],
+    "prevention": [
+      "Use certified virus-free seeds and transplants",
+      "Wash hands and disinfect tools before handling plants",
+      "Remove and destroy infected plants promptly",
+      "Control aphid populations"
+    ],
+    "management": [
+      "No chemical cure available for viral infections",
+      "Remove and destroy infected plants to reduce spread",
+      "Disinfect tools between plants with a dilute bleach solution"
+    ],
+    "severity": "High"
+  },
+  {
+    "id": "Tomato_healthy",
+    "crop": "tomato",
+    "name": "Tomato Healthy",
     "symptoms": [],
     "favorableConditions": [],
     "prevention": ["Maintain balanced nutrition", "Monitor field regularly"],
