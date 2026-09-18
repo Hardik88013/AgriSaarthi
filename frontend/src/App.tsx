@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import FarmerProfileForm from './components/FarmerProfileForm';
 import PlaceholderPage from './pages/PlaceholderPage';
 import CropRecommendation from './pages/CropRecommendation';
+import Weather from './pages/Weather';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile" element={<FarmerProfileForm />} />
               <Route path="/crop-recommendation" element={<CropRecommendation />} />
+              <Route path="/weather" element={<Weather />} />
               <Route path="*" element={<PlaceholderPage />} />
             </Route>
           </Route>
