@@ -37,14 +37,27 @@ ASP.NET Core Web API (Main Backend)
 - `docs/` - Project documentation and architecture diagrams
 
 ## Current Development Status
-- **Phase 1:** Initialized repository structure, basic frontend shell, and minimal backend API endpoints for health checks. (In Progress)
+- **Phase 1:** Initialized repository structure, basic frontend shell, and minimal backend API endpoints for health checks. (Completed)
+- **Phase 2:** Established database layer (EF Core + SQL Server) and basic Farmer Profile functionality. (In Progress)
 
 ## Local Setup Instructions
 
 ### Prerequisites
 - Node.js & npm
-- .NET 8 SDK (or latest)
+- .NET 8/10 SDK (or latest)
 - Python 3.9+
+- SQL Server (or LocalDB)
+
+### Configuration
+1. Copy `.env.example` to `.env` in the root directory (do not commit this file).
+2. For the main API backend, update `appsettings.Development.json` with your active SQL Server connection string under `DefaultConnection` if different from the default LocalDB.
+
+### Database Setup
+To initialize the SQL Server database schema, run Entity Framework migrations from the backend folder:
+```bash
+cd backend/AgriSaarthi.Api
+dotnet ef database update
+```
 
 ### Running the Frontend
 ```bash
@@ -57,7 +70,7 @@ npm run dev
 ```bash
 cd backend/AgriSaarthi.Api
 dotnet restore
-dotnet run
+dotnet run --launch-profile http
 ```
 
 ### Running the AI Service (FastAPI)
