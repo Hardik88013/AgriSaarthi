@@ -20,6 +20,7 @@ builder.Services.AddDbContext<AgriSaarthiDbContext>(options =>
 // Application Services
 builder.Services.AddScoped<IFarmerService, FarmerService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAgriKnowledgeService, AgriKnowledgeService>();
 builder.Services.AddHttpClient<IAiService, AiService>();
 builder.Services.AddHttpClient<IWeatherService, WeatherService>();
 
