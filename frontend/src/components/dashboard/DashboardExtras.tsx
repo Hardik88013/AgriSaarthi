@@ -1,13 +1,14 @@
 import React from 'react';
 import { ArrowRight, Leaf, Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const BannerCard = ({ 
-  title, subtitle, buttonText, icon, bgImage, color 
+  title, subtitle, buttonText, icon, bgImage, color, to 
 }: { 
-  title: string, subtitle: string, buttonText: string, icon: React.ReactNode, bgImage: string, color: string 
+  title: string, subtitle: string, buttonText: string, icon: React.ReactNode, bgImage: string, color: string, to: string 
 }) => {
   return (
-    <div className="relative overflow-hidden rounded-2xl shadow-sm group cursor-pointer h-full border border-slate-100 flex flex-col justify-end min-h-[130px]">
+    <Link to={to} className="relative overflow-hidden rounded-2xl shadow-sm group cursor-pointer h-full border border-slate-100 flex flex-col justify-end min-h-[130px] block transition-transform hover:-translate-y-1">
       <div 
         className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500"
         style={{ backgroundImage: `url("${bgImage}")`, backgroundSize: 'cover', backgroundPosition: 'center' }}
@@ -24,7 +25,7 @@ export const BannerCard = ({
           {buttonText} <ArrowRight size={10} className="ml-1" />
         </button>
       </div>
-    </div>
+    </Link>
   );
 };
 
@@ -38,6 +39,7 @@ export const ExtrasRow = () => {
         icon={<div className="w-5 h-5 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2v1"/><path d="M12 7v1"/><path d="M12 12v1"/><path d="M12 17v1"/><path d="m19 12-1 .5"/><path d="m19 17-1 .5"/><path d="m19 7-1 .5"/><path d="m19 2-1 .5"/><path d="m5 12 1 .5"/><path d="m5 17 1 .5"/><path d="m5 7 1 .5"/><path d="m5 2 1 .5"/></svg></div>}
         bgImage="https://images.unsplash.com/photo-1592982537447-6f2334cbdfa8?auto=format&fit=crop&w=400&q=80"
         color="text-amber-600"
+        to="/farming-tips"
       />
       <BannerCard 
         title="Sustainable Farming"
@@ -46,6 +48,7 @@ export const ExtrasRow = () => {
         icon={<Leaf size={16} className="text-[#27ae60]" />}
         bgImage="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=400&q=80"
         color="text-[#27ae60]"
+        to="/knowledge-hub"
       />
       <BannerCard 
         title="Join Our Community"
@@ -54,6 +57,7 @@ export const ExtrasRow = () => {
         icon={<Users size={16} className="text-[#145a32]" />}
         bgImage="https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=400&q=80"
         color="text-[#145a32]"
+        to="/profile"
       />
     </div>
   );
