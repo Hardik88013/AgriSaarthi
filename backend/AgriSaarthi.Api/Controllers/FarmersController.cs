@@ -1,10 +1,13 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AgriSaarthi.Api.DTOs;
 using AgriSaarthi.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgriSaarthi.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class FarmersController : ControllerBase
@@ -25,6 +28,7 @@ namespace AgriSaarthi.Api.Controllers
             return Ok(farmer);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateFarmer([FromBody] FarmerCreateDto dto)
         {
@@ -38,7 +42,13 @@ namespace AgriSaarthi.Api.Controllers
         [HttpGet("{id}/profile")]
         public async Task<IActionResult> GetFarmerProfile(int id)
         {
-            // Verify farmer exists first
+            // Security: Ensure the requested profile matches the logged-in user
+            var currentUserIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserIdStr) || int.Parse(currentUserIdStr) != id)
+            {
+                return Forbid();
+            }
+
             var farmer = await _farmerService.GetFarmerAsync(id);
             if (farmer == null) return NotFound(new { Message = "Farmer not found." });
 
@@ -51,6 +61,13 @@ namespace AgriSaarthi.Api.Controllers
         [HttpPut("{id}/profile")]
         public async Task<IActionResult> UpdateFarmerProfile(int id, [FromBody] FarmerProfileDto dto)
         {
+            // Security: Ensure the requested profile matches the logged-in user
+            var currentUserIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(currentUserIdStr) || int.Parse(currentUserIdStr) != id)
+            {
+                return Forbid();
+            }
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
