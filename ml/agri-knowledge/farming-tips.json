@@ -1,0 +1,66 @@
+[
+  {
+    "id": "ft_1",
+    "category": "Soil preparation",
+    "crop": "All",
+    "title": "Deep Ploughing",
+    "description": "Perform deep summer ploughing to expose soil-borne pathogens and pests to intense heat.",
+    "actionableAdvice": "Plough fields up to 15-20cm deep during May-June before the onset of monsoons."
+  },
+  {
+    "id": "ft_2",
+    "category": "Irrigation",
+    "crop": "Rice",
+    "title": "Alternate Wetting and Drying",
+    "description": "AWD is a water-saving technology that farmers can apply to reduce their irrigation water consumption.",
+    "actionableAdvice": "Let the field dry out for 1-3 days after the ponded water drops to 15cm below the soil surface before re-flooding."
+  },
+  {
+    "id": "ft_3",
+    "category": "Sustainable farming",
+    "crop": "All",
+    "title": "Green Manuring",
+    "description": "Incorporate green manure crops like Dhaincha or Sunhemp before transplanting the main crop to enrich soil nitrogen.",
+    "actionableAdvice": "Sow green manure crop seeds 45 days before the main crop and plough them back into the soil at the flowering stage."
+  },
+  {
+    "id": "ft_4",
+    "category": "Disease prevention",
+    "crop": "Tomato",
+    "title": "Staking and Pruning",
+    "description": "Keeping leaves off the soil reduces early blight and soil-borne infections.",
+    "actionableAdvice": "Tie tomato plants to wooden stakes or trellises 3-4 weeks after transplanting. Prune the bottom 12 inches of leaves."
+  },
+  {
+    "id": "ft_5",
+    "category": "Pest monitoring",
+    "crop": "Cotton",
+    "title": "Pheromone Traps",
+    "description": "Pheromone traps monitor the adult moth population of Pink Bollworm.",
+    "actionableAdvice": "Install 5 traps per hectare exactly at crop canopy level starting 45 days after sowing."
+  },
+  {
+    "id": "ft_6",
+    "category": "Water conservation",
+    "crop": "Wheat",
+    "title": "Zero Tillage",
+    "description": "Planting wheat without tilling the soil preserves moisture, reduces cost, and prevents weed emergence.",
+    "actionableAdvice": "Use a Zero Till Seed-cum-Fertilizer Drill to sow seeds directly into the residue of the previous crop."
+  },
+  {
+    "id": "ft_7",
+    "category": "Crop rotation",
+    "crop": "Potato",
+    "title": "Legume Rotation",
+    "description": "Rotating potatoes with legumes breaks the cycle of soil-borne diseases like common scab and late blight.",
+    "actionableAdvice": "Avoid planting potatoes in the same field for more than 1 year in a 3-year cycle. Rotate with beans or peas."
+  },
+  {
+    "id": "ft_8",
+    "category": "Organic matter/compost",
+    "crop": "Sugarcane",
+    "title": "Trash Mulching",
+    "description": "Leaving sugarcane trash as mulch conserves moisture, suppresses weeds, and adds organic matter to the soil over time.",
+    "actionableAdvice": "Spread dried sugarcane leaves between rows instead of burning them after harvest."
+  }
+]
