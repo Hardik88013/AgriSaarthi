@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { CloudSun, Info, Leaf, MapPin, Search, UploadCloud, Sprout, Wind, Droplets, Droplet } from 'lucide-react';
-import { useAuth } from '../../../context/AuthContext';
+import { MapPin } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 
 // -----------------------------

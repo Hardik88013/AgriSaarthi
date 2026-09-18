@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { TrendingUp, TrendingDown, Minus, BookOpen, Leaf, Users } from 'lucide-react';
 
 // -----------------------------

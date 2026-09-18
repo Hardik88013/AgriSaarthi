@@ -1,6 +1,4 @@
-import React from 'react';
-import { CloudSun, UploadCloud, Sprout, Wind, Droplets, Zap, Search, HelpCircle, Send } from 'lucide-react';
-import clsx from 'clsx';
+import { CloudSun, UploadCloud, Sprout, Wind, Droplets, Zap, HelpCircle, Send } from 'lucide-react';
 
 // -----------------------------
 // Weather Advisory

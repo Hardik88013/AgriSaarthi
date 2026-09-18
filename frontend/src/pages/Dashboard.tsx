@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Sprout, CloudSun, LineChart, Beaker } from 'lucide-react';
 import { WelcomeSection, SummaryCard, FarmOverview } from '../components/dashboard/DashboardCore';
 import { WeatherAdvisory, DiseaseDetectionCard, CropRecommendationCard, AiSaarthiCard } from '../components/dashboard/DashboardWidgets';
