@@ -1,0 +1,57 @@
+[
+  {
+    "id": "high_rain_fungal",
+    "condition": "rain_sum > 20",
+    "title": "High Rainfall Alert",
+    "riskLevel": "High",
+    "alerts": [
+      "Heavy rainfall increases the risk of fungal diseases."
+    ],
+    "recommendations": [
+      "Monitor field drainage to prevent waterlogging.",
+      "Avoid unnecessary spraying before rainfall.",
+      "Inspect crops for early disease symptoms once weather clears."
+    ]
+  },
+  {
+    "id": "high_humidity",
+    "condition": "humidity > 85",
+    "title": "High Humidity Alert",
+    "riskLevel": "Moderate",
+    "alerts": [
+      "Prolonged high humidity creates favorable conditions for blights and mildews."
+    ],
+    "recommendations": [
+      "Ensure proper plant spacing for air circulation.",
+      "Avoid overhead irrigation.",
+      "Consider preventative fungicide application if crops are susceptible."
+    ]
+  },
+  {
+    "id": "high_temp",
+    "condition": "temperature_max > 35",
+    "title": "Heat Stress Warning",
+    "riskLevel": "Moderate",
+    "alerts": [
+      "High temperatures can cause heat stress and increase pest activity."
+    ],
+    "recommendations": [
+      "Ensure adequate soil moisture through consistent irrigation.",
+      "Consider shading for sensitive crops if possible.",
+      "Monitor closely for pest outbreaks like aphids and whiteflies."
+    ]
+  },
+  {
+    "id": "strong_wind",
+    "condition": "wind_speed > 25",
+    "title": "Strong Wind Advisory",
+    "riskLevel": "Low",
+    "alerts": [
+      "Strong winds may cause physical damage to tall crops."
+    ],
+    "recommendations": [
+      "Delay any foliar spraying until wind subsides.",
+      "Check crop supports or trellises."
+    ]
+  }
+]

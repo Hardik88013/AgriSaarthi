@@ -1,0 +1,10 @@
+[
+  { "id": "tomato", "name": "Tomato", "scientificName": "Solanum lycopersicum" },
+  { "id": "potato", "name": "Potato", "scientificName": "Solanum tuberosum" },
+  { "id": "pepper_bell", "name": "Pepper/Bell Pepper", "scientificName": "Capsicum annuum" },
+  { "id": "rice", "name": "Rice", "scientificName": "Oryza sativa" },
+  { "id": "wheat", "name": "Wheat", "scientificName": "Triticum aestivum" },
+  { "id": "maize", "name": "Maize", "scientificName": "Zea mays" },
+  { "id": "cotton", "name": "Cotton", "scientificName": "Gossypium" },
+  { "id": "sugarcane", "name": "Sugarcane", "scientificName": "Saccharum officinarum" }
+]

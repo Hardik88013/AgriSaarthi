@@ -1,0 +1,72 @@
+[
+  {
+    "id": "tomato_hornworm",
+    "crop": "tomato",
+    "name": "Tomato Hornworm",
+    "symptoms": [
+      "Large, green caterpillars with horn-like tail",
+      "Extensive defoliation (leaves eaten rapidly)",
+      "Dark green or black droppings on leaves"
+    ],
+    "favorableConditions": [
+      "Warm summer temperatures",
+      "Presence of weeds from the nightshade family"
+    ],
+    "prevention": [
+      "Keep field weed-free",
+      "Tillage after harvest to destroy pupae in soil"
+    ],
+    "management": [
+      "Handpick caterpillars if infestation is small",
+      "Use biological controls like Bacillus thuringiensis (Bt)",
+      "Encourage natural predators like parasitic wasps"
+    ],
+    "severity": "High"
+  },
+  {
+    "id": "aphids",
+    "crop": "potato",
+    "name": "Aphids",
+    "symptoms": [
+      "Curled, stunted, or yellowing leaves",
+      "Sticky honeydew residue on leaves",
+      "Presence of tiny green/black insects on undersides of leaves"
+    ],
+    "favorableConditions": [
+      "Warm, dry conditions",
+      "Excessive nitrogen fertilization"
+    ],
+    "prevention": [
+      "Avoid excessive nitrogen use",
+      "Encourage beneficial insects (ladybugs, lacewings)"
+    ],
+    "management": [
+      "Use strong water spray to dislodge pests",
+      "Apply insecticidal soap or neem oil for severe infestations"
+    ],
+    "severity": "Moderate"
+  },
+  {
+    "id": "whitefly",
+    "crop": "pepper_bell",
+    "name": "Whitefly",
+    "symptoms": [
+      "Tiny white moths flying up when plant is disturbed",
+      "Yellowing leaves",
+      "Honeydew and sooty mold on leaves"
+    ],
+    "favorableConditions": [
+      "Warm, dry weather",
+      "Greenhouse or protected environments"
+    ],
+    "prevention": [
+      "Use yellow sticky traps to monitor populations",
+      "Maintain weed-free environment"
+    ],
+    "management": [
+      "Introduce natural predators like Encarsia formosa",
+      "Use horticultural oils or insecticidal soaps"
+    ],
+    "severity": "Moderate"
+  }
+]
