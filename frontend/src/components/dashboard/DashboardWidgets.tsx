@@ -138,7 +138,7 @@ export const CropRecommendationCard = () => {
             </div>
             <button 
               onClick={() => setResult(null)}
-              className="mt-6 text-sm text-slate-500 hover:text-slate-700 underline"
+              className="mt-2 text-sm text-slate-500 hover:text-slate-700 underline"
             >
               Get another recommendation
             </button>
@@ -183,7 +183,7 @@ export const CropRecommendationCard = () => {
             <button 
               type="submit" 
               disabled={loading}
-              className="mt-auto w-full bg-[#27ae60] hover:bg-[#1e8449] text-white py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50"
+              className="mt-6 w-full bg-[#27ae60] hover:bg-[#1e8449] text-white py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50"
             >
               {loading ? 'Analyzing Soil Data...' : 'Get Recommendation'}
             </button>
