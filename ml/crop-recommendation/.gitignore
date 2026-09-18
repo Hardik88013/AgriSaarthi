@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environments
+.venv/
+env/
+venv/
+ENV/
+
+# Model and cache files
+# Note: crop_rf_model.joblib is ignored so we don't commit large binaries. 
+*.joblib
+*.pkl
+
+# DO NOT IGNORE DATASET
+!data/Crop_recommendation.csv
