@@ -10,6 +10,9 @@ import CropRecommendation from './pages/CropRecommendation';
 import Weather from './pages/Weather';
 import { DiseaseDetection } from './pages/DiseaseDetection';
 import PestDisease from './pages/PestDisease';
+import MarketPrices from './pages/MarketPrices';
+import FarmingTips from './pages/FarmingTips';
+import KnowledgeHub from './pages/KnowledgeHub';
 
 function App() {
   return (
@@ -29,6 +32,9 @@ function App() {
               <Route path="/weather" element={<Weather />} />
               <Route path="/disease-detection" element={<DiseaseDetection />} />
               <Route path="/pest-disease" element={<PestDisease />} />
+              <Route path="/market-prices" element={<MarketPrices />} />
+              <Route path="/farming-tips" element={<FarmingTips />} />
+              <Route path="/knowledge-hub" element={<KnowledgeHub />} />
               <Route path="*" element={<PlaceholderPage />} />
             </Route>
           </Route>
