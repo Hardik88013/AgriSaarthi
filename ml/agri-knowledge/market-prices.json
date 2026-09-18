@@ -1,0 +1,82 @@
+[
+  {
+    "id": "mp_1",
+    "crop": "Rice",
+    "market": "Karnal Mandi",
+    "state": "Haryana",
+    "price": 2850.00,
+    "unit": "Quintal",
+    "source": "Reference Data (Sample)",
+    "lastUpdated": "2023-10-15T00:00:00Z"
+  },
+  {
+    "id": "mp_2",
+    "crop": "Wheat",
+    "market": "Khanna Mandi",
+    "state": "Punjab",
+    "price": 2275.00,
+    "unit": "Quintal",
+    "source": "Reference Data (Sample)",
+    "lastUpdated": "2023-10-15T00:00:00Z"
+  },
+  {
+    "id": "mp_3",
+    "crop": "Maize",
+    "market": "Gulabbagh Mandi",
+    "state": "Bihar",
+    "price": 2100.00,
+    "unit": "Quintal",
+    "source": "Reference Data (Sample)",
+    "lastUpdated": "2023-10-15T00:00:00Z"
+  },
+  {
+    "id": "mp_4",
+    "crop": "Cotton",
+    "market": "Rajkot Mandi",
+    "state": "Gujarat",
+    "price": 7200.00,
+    "unit": "Quintal",
+    "source": "Reference Data (Sample)",
+    "lastUpdated": "2023-10-15T00:00:00Z"
+  },
+  {
+    "id": "mp_5",
+    "crop": "Sugarcane",
+    "market": "Muzaffarnagar Mandi",
+    "state": "Uttar Pradesh",
+    "price": 350.00,
+    "unit": "Quintal",
+    "source": "Reference Data (Sample)",
+    "lastUpdated": "2023-10-15T00:00:00Z"
+  },
+  {
+    "id": "mp_6",
+    "crop": "Tomato",
+    "market": "Azadpur Mandi",
+    "state": "Delhi",
+    "price": 1800.00,
+    "unit": "Quintal",
+    "source": "Reference Data (Sample)",
+    "lastUpdated": "2023-10-15T00:00:00Z"
+  },
+  {
+    "id": "mp_7",
+    "crop": "Potato",
+    "market": "Agra Mandi",
+    "state": "Uttar Pradesh",
+    "price": 1250.00,
+    "unit": "Quintal",
+    "source": "Reference Data (Sample)",
+    "lastUpdated": "2023-10-15T00:00:00Z"
+  },
+  {
+    "id": "mp_8",
+    "crop": "Onion",
+    "market": "Lasalgaon Mandi",
+    "state": "Maharashtra",
+    "price": 2400.00,
+    "unit": "Quintal",
+    "source": "Reference Data (Sample)",
+    "lastUpdated": "2023-10-15T00:00:00Z"
+  }
+]
