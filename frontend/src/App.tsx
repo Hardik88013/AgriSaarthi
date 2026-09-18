@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import FarmerProfileForm from './components/FarmerProfileForm';
 import PlaceholderPage from './pages/PlaceholderPage';
+import CropRecommendation from './pages/CropRecommendation';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile" element={<FarmerProfileForm />} />
+              <Route path="/crop-recommendation" element={<CropRecommendation />} />
               <Route path="*" element={<PlaceholderPage />} />
             </Route>
           </Route>
