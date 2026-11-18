@@ -1,0 +1,50 @@
+[
+  {
+    "case": "Case 1: Correct Diseased",
+    "image_file": "PlantVillage/PlantVillage/Potato___Early_blight/6173dbe2-1379-4241-a43e-7cbad448b6cc___RS_Early.B 6993.JPG",
+    "true_label": "Potato___Early_blight",
+    "pred_label": "Potato___Early_blight",
+    "confidence": 0.2515,
+    "is_correct": true,
+    "output_visualization": "ml/disease-detection/evaluation/gradcam/case_1_Potato___Early_blight.png",
+    "heatmap_min": 0.0,
+    "heatmap_max": 1.0,
+    "center_to_border_focus_ratio": 3.19
+  },
+  {
+    "case": "Case 2: Correct Healthy",
+    "image_file": "PlantVillage/PlantVillage/Pepper__bell___healthy/d981e524-b82f-4e06-911f-01964192e36f___JR_HL 5914.JPG",
+    "true_label": "Pepper__bell___healthy",
+    "pred_label": "Pepper__bell___healthy",
+    "confidence": 0.1522,
+    "is_correct": true,
+    "output_visualization": "ml/disease-detection/evaluation/gradcam/case_2_Pepper__bell___healthy.png",
+    "heatmap_min": 0.0,
+    "heatmap_max": 1.0,
+    "center_to_border_focus_ratio": 4.73
+  },
+  {
+    "case": "Case 3: Incorrect Classification",
+    "image_file": "PlantVillage/PlantVillage/Tomato__Target_Spot/d9a0ed7a-8257-4002-b0b8-fa0c5f17028d___Com.G_TgS_FL 9788.JPG",
+    "true_label": "Tomato__Target_Spot",
+    "pred_label": "Potato___healthy",
+    "confidence": 0.1381,
+    "is_correct": false,
+    "output_visualization": "ml/disease-detection/evaluation/gradcam/case_3_Tomato__Target_Spot.png",
+    "heatmap_min": 0.0,
+    "heatmap_max": 1.0,
+    "center_to_border_focus_ratio": 2.5
+  },
+  {
+    "case": "Case 4: Additional Disease Class",
+    "image_file": "PlantVillage/PlantVillage/Tomato__Tomato_YellowLeaf__Curl_Virus/1959b368-d593-4e9a-81b0-f723593192a6___YLCV_GCREC 5138.JPG",
+    "true_label": "Tomato__Tomato_YellowLeaf__Curl_Virus",
+    "pred_label": "Tomato__Tomato_YellowLeaf__Curl_Virus",
+    "confidence": 0.1633,
+    "is_correct": true,
+    "output_visualization": "ml/disease-detection/evaluation/gradcam/case_4_Tomato__Tomato_YellowLeaf__Curl_Virus.png",
+    "heatmap_min": 0.0,
+    "heatmap_max": 1.0,
+    "center_to_border_focus_ratio": 15.24
+  }
+]

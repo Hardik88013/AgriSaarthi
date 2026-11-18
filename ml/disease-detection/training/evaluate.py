@@ -106,7 +106,9 @@ def evaluate_model(
     output_dir: str = EVAL_DIR,
     batch_size: int = 32,
     max_samples_per_class: int = None,
-    seed: int = 42
+    seed: int = 42,
+    prefix: str = "",
+    manifest_path: str = None
 ) -> dict:
     """Evaluates MobileNetV2 checkpoint on held-out test split."""
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -133,9 +135,23 @@ def evaluate_model(
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 
-    test_samples, test_dist = get_test_split(
-        data_dir, classes, seed=seed, max_samples_per_class=max_samples_per_class
-    )
+    if manifest_path and os.path.exists(manifest_path):
+        with open(manifest_path, "r", encoding="utf-8") as mf:
+            mdata = json.load(mf)
+        base_data_dir = os.path.join(DISEASE_DIR, "data")
+        test_samples = []
+        test_dist = {c: 0 for c in classes}
+        for item in mdata["test_samples"]:
+            c_name = item["class_name"]
+            if max_samples_per_class and test_dist[c_name] >= max_samples_per_class:
+                continue
+            full_p = os.path.join(base_data_dir, item["rel_path"])
+            test_samples.append((full_p, item["label"]))
+            test_dist[c_name] += 1
+    else:
+        test_samples, test_dist = get_test_split(
+            data_dir, classes, seed=seed, max_samples_per_class=max_samples_per_class
+        )
     print(f"[Evaluation] Test split size: {len(test_samples)} images across {len(classes)} classes")
 
     test_dataset = TransformedDataset(test_samples, transform=eval_transform)
@@ -172,7 +188,8 @@ def evaluate_model(
     os.makedirs(output_dir, exist_ok=True)
 
     # 1. Save Confusion Matrix Plot
-    cm_plot_path = os.path.join(output_dir, "confusion_matrix.png")
+    cm_name = f"{prefix}confusion_matrix.png" if prefix else "confusion_matrix.png"
+    cm_plot_path = os.path.join(output_dir, cm_name)
     fig, ax = plt.subplots(figsize=(12, 10))
     im = ax.imshow(conf_mat, interpolation="nearest", cmap="Blues")
     ax.figure.colorbar(im, ax=ax)
@@ -181,7 +198,7 @@ def evaluate_model(
         yticks=np.arange(conf_mat.shape[0]),
         xticklabels=[f"C{i}" for i in range(len(classes))],
         yticklabels=[f"C{i}" for i in range(len(classes))],
-        title=f"Confusion Matrix (Test Acc: {acc*100:.2f}%)",
+        title=f"Confusion Matrix ({prefix.strip('_') if prefix else 'Test'} Acc: {acc*100:.2f}%)",
         ylabel="True Label",
         xlabel="Predicted Label"
     )
@@ -219,12 +236,14 @@ def evaluate_model(
         "classification_report": report_dict
     }
 
-    metrics_json_path = os.path.join(output_dir, "evaluation_metrics.json")
+    metrics_json_name = f"{prefix}evaluation_metrics.json" if prefix else "evaluation_metrics.json"
+    metrics_json_path = os.path.join(output_dir, metrics_json_name)
     with open(metrics_json_path, "w", encoding="utf-8") as f:
         json.dump(metrics_summary, f, indent=2)
 
     # 3. Save text classification report
-    report_txt_path = os.path.join(output_dir, "classification_report.txt")
+    report_txt_name = f"{prefix}classification_report.txt" if prefix else "classification_report.txt"
+    report_txt_path = os.path.join(output_dir, report_txt_name)
     with open(report_txt_path, "w", encoding="utf-8") as f:
         f.write(f"=== MOBILENETV2 EVALUATION REPORT ===\n")
         f.write(f"Model Checkpoint: {model_weights_path}\n")
@@ -258,6 +277,8 @@ if __name__ == "__main__":
     parser.add_argument("--batch-size", type=int, default=32, help="Batch size")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility")
     parser.add_argument("--output-dir", type=str, default=EVAL_DIR, help="Evaluation output folder")
+    parser.add_argument("--prefix", type=str, default="", help="Prefix for output evaluation artifacts")
+    parser.add_argument("--manifest-path", type=str, default=None, help="Path to split_manifest.json")
     args = parser.parse_args()
 
     evaluate_model(
@@ -265,5 +286,7 @@ if __name__ == "__main__":
         output_dir=args.output_dir,
         batch_size=args.batch_size,
         max_samples_per_class=args.max_samples_per_class,
-        seed=args.seed
+        seed=args.seed,
+        prefix=args.prefix,
+        manifest_path=args.manifest_path
     )

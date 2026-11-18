@@ -156,16 +156,28 @@ def train_candidate_model(
     learning_rate: float = 0.001,
     fine_tune_lr: float = 0.0001,
     max_samples_per_class: int = None,
-    seed: int = 42
+    seed: int = 42,
+    num_threads: int = 2
 ):
     """Executes two-stage transfer learning to train a high-accuracy candidate model."""
     torch.manual_seed(seed)
     np.random.seed(seed)
+    if num_threads:
+        torch.set_num_threads(num_threads)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+    try:
+        import psutil
+        initial_cpu = psutil.cpu_percent(interval=None)
+        initial_ram = psutil.virtual_memory().percent
+    except ImportError:
+        initial_cpu, initial_ram = None, None
+
     print(f"===========================================================")
-    print(f"AgriSaarthi Full-Dataset Candidate Model Training")
-    print(f"Compute Device: {device}")
+    print(f"AgriSaarthi Candidate Model Training")
+    print(f"Compute Device: {device} | PyTorch CPU Threads: {torch.get_num_threads()}")
+    if initial_cpu is not None:
+        print(f"Hardware Monitor: CPU Load {initial_cpu}% | RAM Usage {initial_ram}%")
     print(f"Random Seed: {seed}")
     print(f"Candidate Save Target: {os.path.join(output_dir, candidate_name)}")
     print(f"===========================================================")
@@ -297,9 +309,17 @@ def train_candidate_model(
         history["val_loss"].append(round(epoch_val_loss, 4))
         history["val_acc"].append(round(epoch_val_acc, 4))
 
+        try:
+            import psutil
+            cpu_pct = psutil.cpu_percent(interval=None)
+            ram_pct = psutil.virtual_memory().percent
+            hw_info = f" | CPU: {cpu_pct}% RAM: {ram_pct}%"
+        except Exception:
+            hw_info = ""
+
         duration = time.time() - ep_start
         print(
-            f"Stage 1 Epoch [{ep:02d}/{stage1_epochs:02d}] ({duration:.1f}s) | "
+            f"Stage 1 Epoch [{ep:02d}/{stage1_epochs:02d}] ({duration:.1f}s{hw_info}) | "
             f"Train Loss: {epoch_train_loss:.4f} Acc: {epoch_train_acc*100:.2f}% | "
             f"Val Loss: {epoch_val_loss:.4f} Acc: {epoch_val_acc*100:.2f}%"
         )
@@ -434,6 +454,7 @@ if __name__ == "__main__":
     parser.add_argument("--max-samples-per-class", type=int, default=None, help="Cap samples per class if constrained")
     parser.add_argument("--seed", type=int, default=42, help="Reproducibility random seed")
     parser.add_argument("--candidate-name", type=str, default="disease_model_candidate.pth", help="Candidate model filename")
+    parser.add_argument("--num-threads", type=int, default=2, help="PyTorch CPU thread count")
     args = parser.parse_args()
 
     train_candidate_model(
@@ -444,5 +465,6 @@ if __name__ == "__main__":
         learning_rate=args.lr,
         fine_tune_lr=args.fine_tune_lr,
         max_samples_per_class=args.max_samples_per_class,
-        seed=args.seed
+        seed=args.seed,
+        num_threads=args.num_threads
     )

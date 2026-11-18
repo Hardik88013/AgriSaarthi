@@ -1,9 +1,9 @@
 === MOBILENETV2 EVALUATION REPORT ===
-Model Checkpoint: D:\AgriSaarthi\ml\disease-detection\model\disease_model_candidate.pth
-Test Samples: 113
-Overall Accuracy: 73.45%
-Macro F1-Score: 71.76%
-Weighted F1-Score: 71.84%
+Model Checkpoint: ml/disease-detection/model/disease_model_candidate_450samples.pth
+Test Samples: 68
+Overall Accuracy: 66.18%
+Macro F1-Score: 62.84%
+Weighted F1-Score: 62.42%
 
 Class Mapping Legend:
   C00: Pepper__bell___Bacterial_spot
@@ -25,22 +25,22 @@ Class Mapping Legend:
 Detailed Per-Class Performance:
                                              precision    recall  f1-score   support
 
-              Pepper__bell___Bacterial_spot       1.00      0.86      0.92         7
-                     Pepper__bell___healthy       0.89      1.00      0.94         8
-                      Potato___Early_blight       1.00      0.86      0.92         7
-                       Potato___Late_blight       0.54      0.88      0.67         8
-                           Potato___healthy       0.73      1.00      0.84         8
-                      Tomato_Bacterial_spot       0.67      0.86      0.75         7
-                        Tomato_Early_blight       0.80      0.50      0.62         8
-                         Tomato_Late_blight       0.55      0.75      0.63         8
-                           Tomato_Leaf_Mold       0.50      0.29      0.36         7
-                  Tomato_Septoria_leaf_spot       1.00      0.86      0.92         7
-Tomato_Spider_mites_Two_spotted_spider_mite       0.50      0.50      0.50         8
-                        Tomato__Target_Spot       1.00      0.14      0.25         7
-      Tomato__Tomato_YellowLeaf__Curl_Virus       1.00      0.75      0.86         8
-                Tomato__Tomato_mosaic_virus       0.75      0.86      0.80         7
-                             Tomato_healthy       0.70      0.88      0.78         8
+              Pepper__bell___Bacterial_spot       0.75      0.75      0.75         4
+                     Pepper__bell___healthy       0.62      1.00      0.77         5
+                      Potato___Early_blight       0.67      1.00      0.80         4
+                       Potato___Late_blight       0.67      0.80      0.73         5
+                           Potato___healthy       0.50      1.00      0.67         5
+                      Tomato_Bacterial_spot       0.57      1.00      0.73         4
+                        Tomato_Early_blight       0.00      0.00      0.00         5
+                         Tomato_Late_blight       0.75      0.60      0.67         5
+                           Tomato_Leaf_Mold       1.00      0.25      0.40         4
+                  Tomato_Septoria_leaf_spot       0.75      0.75      0.75         4
+Tomato_Spider_mites_Two_spotted_spider_mite       0.50      0.40      0.44         5
+                        Tomato__Target_Spot       1.00      0.25      0.40         4
+      Tomato__Tomato_YellowLeaf__Curl_Virus       0.80      0.80      0.80         5
+                Tomato__Tomato_mosaic_virus       1.00      0.75      0.86         4
+                             Tomato_healthy       0.75      0.60      0.67         5
 
-                                   accuracy                           0.73       113
-                                  macro avg       0.77      0.73      0.72       113
-                               weighted avg       0.77      0.73      0.72       113
+                                   accuracy                           0.66        68
+                                  macro avg       0.69      0.66      0.63        68
+                               weighted avg       0.68      0.66      0.62        68
