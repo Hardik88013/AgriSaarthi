@@ -28,7 +28,7 @@ namespace AgriSaarthi.Api.Controllers
         }
 
         [HttpPost("predict")]
-        public async Task<IActionResult> PredictDisease(IFormFile image)
+        public async Task<IActionResult> PredictDisease(IFormFile image, [FromQuery] bool explain = false)
         {
             if (image == null || image.Length == 0)
             {
@@ -58,7 +58,8 @@ namespace AgriSaarthi.Api.Controllers
 
                 var aiClient = _httpClientFactory.CreateClient();
                 var baseUrl = _config["AiService:BaseUrl"] ?? "http://localhost:8000";
-                var response = await aiClient.PostAsync($"{baseUrl}/predict/disease", content);
+                var url = explain ? $"{baseUrl}/predict/disease?explain=true" : $"{baseUrl}/predict/disease";
+                var response = await aiClient.PostAsync(url, content);
 
                 if (!response.IsSuccessStatusCode)
                 {

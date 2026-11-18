@@ -1,17 +1,26 @@
 import { API_BASE_URL } from '../config';
 import React, { useState, useRef } from 'react';
-import { Upload, X, AlertTriangle, Scan, CheckCircle, RotateCcw, Info, ShieldAlert } from 'lucide-react';
+import { Upload, X, AlertTriangle, Scan, CheckCircle, RotateCcw, Info, ShieldAlert, Sparkles, Layers } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+
+interface DiseaseDetectionResult {
+  predictedDisease: string;
+  confidence: number;
+  heatmapBase64?: string | null;
+}
 
 export const DiseaseDetection = () => {
   const { token } = useAuth();
   const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ predictedDisease: string, confidence: number } | null>(null);
+  const [result, setResult] = useState<DiseaseDetectionResult | null>(null);
   const [knowledge, setKnowledge] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [explainError, setExplainError] = useState<string | null>(null);
+  const [enableExplain, setEnableExplain] = useState<boolean>(true);
+  const [activeView, setActiveView] = useState<'original' | 'gradcam'>('original');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,6 +35,8 @@ export const DiseaseDetection = () => {
       setResult(null);
       setKnowledge(null);
       setError(null);
+      setExplainError(null);
+      setActiveView('original');
     }
   };
 
@@ -35,6 +46,8 @@ export const DiseaseDetection = () => {
     setResult(null);
     setKnowledge(null);
     setError(null);
+    setExplainError(null);
+    setActiveView('original');
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -43,6 +56,7 @@ export const DiseaseDetection = () => {
     
     setLoading(true);
     setError(null);
+    setExplainError(null);
     setResult(null);
     setKnowledge(null);
 
@@ -50,7 +64,8 @@ export const DiseaseDetection = () => {
     formData.append('image', image);
 
     try {
-      const res = await fetch(`${API_BASE_URL}/api/disease-detection/predict`, {
+      const queryParam = enableExplain ? '?explain=true' : '';
+      const res = await fetch(`${API_BASE_URL}/api/disease-detection/predict${queryParam}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -67,8 +82,19 @@ export const DiseaseDetection = () => {
         throw new Error(msg);
       }
 
-      const data = await res.json();
+      const data: DiseaseDetectionResult = await res.json();
       setResult(data);
+
+      if (enableExplain) {
+        if (data.heatmapBase64) {
+          setActiveView('gradcam');
+        } else {
+          setActiveView('original');
+          setExplainError('AI visual explanation was unavailable; showing original image.');
+        }
+      } else {
+        setActiveView('original');
+      }
 
       // Fetch knowledge base info
       if (data.predictedDisease) {
@@ -113,8 +139,45 @@ export const DiseaseDetection = () => {
           </div>
         )}
 
+        {explainError && (
+          <div className="mb-6 p-3 bg-amber-50 rounded-xl flex items-center space-x-2 border border-amber-200 text-xs text-amber-800">
+            <Info className="h-4 w-4 text-amber-600 flex-shrink-0" />
+            <p>{explainError}</p>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-4">
+            {/* View Switcher Tabs (Visible when preview exists and heatmap is available) */}
+            {previewUrl && result?.heatmapBase64 && (
+              <div className="flex bg-slate-100 p-1 rounded-xl text-xs font-semibold">
+                <button
+                  type="button"
+                  onClick={() => setActiveView('original')}
+                  className={`flex-1 py-1.5 px-3 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                    activeView === 'original' 
+                      ? 'bg-white text-emerald-700 shadow-sm' 
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>Original Leaf</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveView('gradcam')}
+                  className={`flex-1 py-1.5 px-3 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                    activeView === 'gradcam' 
+                      ? 'bg-emerald-600 text-white shadow-sm' 
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>AI Focus (Grad-CAM)</span>
+                </button>
+              </div>
+            )}
+
             {!previewUrl ? (
               <div 
                 className="border-2 border-dashed border-gray-300 rounded-xl p-8 flex flex-col items-center justify-center text-center bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer"
@@ -125,11 +188,22 @@ export const DiseaseDetection = () => {
                 <p className="text-xs text-gray-400">JPG, PNG (max 10MB)</p>
               </div>
             ) : (
-              <div className="relative rounded-xl overflow-hidden border border-gray-200">
-                <img src={previewUrl} alt="Leaf Preview" className="w-full h-64 object-cover" />
+              <div className="relative rounded-xl overflow-hidden border border-gray-200 bg-slate-950">
+                <img 
+                  src={activeView === 'gradcam' && result?.heatmapBase64 ? result.heatmapBase64 : previewUrl} 
+                  alt={activeView === 'gradcam' ? "AI Grad-CAM Heatmap" : "Original Leaf Preview"} 
+                  className="w-full h-64 object-cover" 
+                />
+                {activeView === 'gradcam' && result?.heatmapBase64 && (
+                  <div className="absolute bottom-2 left-2 px-2.5 py-1 bg-black/75 backdrop-blur-sm rounded-md text-[11px] font-medium text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Grad-CAM Focus Overlay (Conv features[-1])
+                  </div>
+                )}
                 <button
                   onClick={clearImage}
                   className="absolute top-2 right-2 p-1.5 bg-white/90 rounded-full hover:bg-white shadow-sm transition-colors"
+                  title="Remove image"
                 >
                   <X className="h-4 w-4 text-gray-600" />
                 </button>
@@ -144,6 +218,24 @@ export const DiseaseDetection = () => {
               className="hidden"
             />
 
+            {/* Explainability Option Toggle */}
+            <div className="flex items-center justify-between px-1 text-xs text-slate-600">
+              <label className="flex items-center space-x-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={enableExplain}
+                  onChange={(e) => setEnableExplain(e.target.checked)}
+                  className="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500"
+                />
+                <span>Include AI Visual Explanation (Grad-CAM)</span>
+              </label>
+              {enableExplain && (
+                <span className="text-[11px] text-emerald-700 font-medium bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                  Explainability ON
+                </span>
+              )}
+            </div>
+
             <button
               onClick={handlePredict}
               disabled={!image || loading}
@@ -156,7 +248,7 @@ export const DiseaseDetection = () => {
               {loading ? (
                 <>
                   <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Analyzing...</span>
+                  <span>{enableExplain ? 'Analyzing & Generating Heatmap...' : 'Analyzing...'}</span>
                 </>
               ) : (
                 <>

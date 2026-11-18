@@ -1,6 +1,9 @@
 import os
 import io
+import sys
 import json
+import base64
+import asyncio
 from contextlib import asynccontextmanager
 from typing import List, Optional
 
@@ -13,9 +16,24 @@ from pydantic import BaseModel, Field, ConfigDict
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+# CPU safety: keep PyTorch threads at 2 (optimal for Core i5-4210U dual-core)
+torch.set_num_threads(2)
+
 # Resolve project paths relative to current file
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(BASE_DIR)
+
+# Grad-CAM module path resolution
+TRAINING_DIR = os.path.join(PROJECT_ROOT, 'ml', 'disease-detection', 'training')
+if TRAINING_DIR not in sys.path:
+    sys.path.insert(0, TRAINING_DIR)
+
+try:
+    from gradcam import MobileNetV2GradCAM
+    GRADCAM_AVAILABLE = True
+except ImportError:
+    GRADCAM_AVAILABLE = False
+    print("[AI Service] Warning: gradcam module could not be imported.")
 
 CROP_MODEL_PATH = os.path.join(PROJECT_ROOT, 'ml', 'crop-recommendation', 'model', 'crop_rf_model.joblib')
 DISEASE_MODEL_PATH = os.path.join(PROJECT_ROOT, 'ml', 'disease-detection', 'model', 'disease_model.pth')
@@ -179,7 +197,7 @@ def predict_crop(request: CropRecommendationRequest):
 
 
 @app.post("/predict/disease")
-async def predict_disease(file: UploadFile = File(...)):
+async def predict_disease(file: UploadFile = File(...), explain: bool = False):
     if disease_model is None or len(disease_classes) == 0:
         raise HTTPException(
             status_code=503,
@@ -218,24 +236,72 @@ async def predict_disease(file: UploadFile = File(...)):
             detail="Corrupted or unrecognized image file. Please upload a valid photo."
         )
 
-    # Tensor preprocessing and inference
+    # Tensor preprocessing
+    input_tensor = disease_transforms(image).unsqueeze(0).to(device)
+
+    # 1. Normal fast path (explain=False): strictly torch.inference_mode()
+    if not explain or not GRADCAM_AVAILABLE:
+        try:
+            disease_model.eval()
+            with torch.inference_mode():
+                outputs = disease_model(input_tensor)
+                probabilities = torch.nn.functional.softmax(outputs[0], dim=0)
+                confidence, predicted_idx = torch.max(probabilities, 0)
+
+            predicted_class = disease_classes[predicted_idx.item()]
+            return {
+                "predictedDisease": predicted_class,
+                "confidence": round(float(confidence.item()), 4)
+            }
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Inference error during disease detection: {str(e)}"
+            )
+
+    # 2. Explainability path (explain=True): gradients required for Grad-CAM
     try:
-        input_tensor = disease_transforms(image).unsqueeze(0).to(device)
-
         disease_model.eval()
-        with torch.inference_mode():
-            outputs = disease_model(input_tensor)
-            probabilities = torch.nn.functional.softmax(outputs[0], dim=0)
-            confidence, predicted_idx = torch.max(probabilities, 0)
+        disease_model.zero_grad()
 
-        predicted_class = disease_classes[predicted_idx.item()]
+        gradcam = MobileNetV2GradCAM(disease_model)
+        try:
+            heatmap, pred_idx, conf = gradcam.generate_heatmap(input_tensor)
+        finally:
+            gradcam.remove_hooks()
+            disease_model.zero_grad()
+
+        predicted_class = disease_classes[pred_idx]
+        confidence = float(conf)
+
+        # Generate blended overlay image
+        blended = MobileNetV2GradCAM.overlay_heatmap(image, heatmap, alpha=0.45, colormap="jet")
+        buf = io.BytesIO()
+        blended.save(buf, format="JPEG", quality=85)
+        heatmap_base64 = "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode("utf-8")
 
         return {
             "predictedDisease": predicted_class,
-            "confidence": round(float(confidence.item()), 4)
+            "confidence": round(confidence, 4),
+            "heatmapBase64": heatmap_base64
         }
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Inference error during disease detection: {str(e)}"
-        )
+    except Exception as ex:
+        print(f"[AI Service] Warning: Grad-CAM generation failed: {ex}. Falling back to standard inference.")
+        # Fallback to standard inference without crashing
+        try:
+            disease_model.eval()
+            with torch.inference_mode():
+                outputs = disease_model(input_tensor)
+                probabilities = torch.nn.functional.softmax(outputs[0], dim=0)
+                confidence, predicted_idx = torch.max(probabilities, 0)
+
+            predicted_class = disease_classes[predicted_idx.item()]
+            return {
+                "predictedDisease": predicted_class,
+                "confidence": round(float(confidence.item()), 4)
+            }
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Inference error during disease detection: {str(e)}"
+            )
